@@ -28,7 +28,8 @@ import {
   FiEdit3,
   FiTrash,
   FiChevronLeft,
-  FiChevronRight
+  FiChevronRight,
+  FiUserCheck
 } from 'react-icons/fi';
 import { USER_ROLE_IDS } from '../utils/constants';
 
