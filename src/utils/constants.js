@@ -15,7 +15,7 @@ export const LANGUAGES = {
 // App Configuration
 export const APP_CONFIG = {
   APP_NAME: 'Admin Dashboard',
-  API_BASE_URL: import.meta.env.VITE_API_URL || 'https://dev-api.fitcircle.coach/api/v1',
+  API_BASE_URL: import.meta.env.VITE_API_URL || 'https://stg-api.fitcircle.coach/api/v1',
   DEFAULT_THEME: THEMES.LIGHT,
   DEFAULT_LANGUAGE: LANGUAGES.ENGLISH,
   VERSION: '1.0.0',
