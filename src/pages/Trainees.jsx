@@ -8,10 +8,12 @@ import {
   createUser, 
   updateUser, 
   deleteUser,
+  restoreUser,
   clearUsersError,
   clearCreateError,
   clearUpdateError,
   clearDeleteError,
+  clearRestoreError,
   clearAllErrors,
   setCurrentPage
 } from '../store/slices/usersSlice';
@@ -45,6 +47,8 @@ const Trainees = () => {
     updateError, 
     deleteLoading, 
     deleteError,
+    restoreLoading,
+    restoreError,
     // Pagination state
     currentPage,
     lastPage,
@@ -203,6 +207,17 @@ const Trainees = () => {
     }
   };
 
+  const handleRestoreUser = async (user) => {
+    try {
+      await dispatch(restoreUser(user.id)).unwrap();
+      dispatch(clearRestoreError());
+      // Refresh current page after restoring user
+      dispatch(fetchUsers({ page: currentPage, role: USER_ROLE_IDS.TRAINEE, search: searchTerm || null }));
+    } catch (error) {
+      console.error('Failed to restore trainee:', error);
+    }
+  };
+
   const handlePageChange = (page) => {
     dispatch(setCurrentPage(page));
     dispatch(fetchUsers({ page, role: USER_ROLE_IDS.TRAINEE, search: searchTerm || null }));
@@ -355,7 +370,12 @@ const Trainees = () => {
           <h4 className="mb-0">{t('trainees.title')}</h4>
           <Button 
             variant="primary" 
-            onClick={() => setShowAddModal(true)}
+            onClick={() =>{
+
+              setShowAddModal(true)
+              resetForm();
+            } 
+          }
             className="d-flex align-items-center gap-2"
           >
             <FiUserPlus />
@@ -367,6 +387,11 @@ const Trainees = () => {
           {error && (
             <Alert variant="danger" dismissible onClose={() => dispatch(clearUsersError())}>
               {error}
+            </Alert>
+          )}
+          {restoreError && (
+            <Alert variant="danger" dismissible onClose={() => dispatch(clearRestoreError())}>
+              {restoreError}
             </Alert>
           )}
 
@@ -404,11 +429,18 @@ const Trainees = () => {
                   <td>{user.unique_id || user.id}</td>
                   <td>
                     <div className="d-flex align-items-center gap-2">
-                      <div className="user-avatar">
+                      <div className={`user-avatar ${user.deleted_at ? 'deleted' : ''}`}>
                         <span>{user.user_name?.charAt(0) || 'U'}</span>
                       </div>
                       <div>
-                        <div className="fw-bold">{user.user_name || 'No Name'}</div>
+                        <div className={`fw-bold ${user.deleted_at ? 'text-muted' : ''}`}>
+                          {user.user_name || 'No Name'}
+                          {user.deleted_at && (
+                            <Badge bg="secondary" className="ms-2">
+                              {t('trainees.deleted')}
+                            </Badge>
+                          )}
+                        </div>
                         <small className="text-muted">ID: {user.id}</small>
                       </div>
                     </div>
@@ -419,24 +451,40 @@ const Trainees = () => {
                   <td>{formatDate(user.created_at)}</td>
                   <td>
                     <div className="d-flex gap-2">
-                      <Button
-                        variant="outline-primary"
-                        size="sm"
-                        onClick={() => handleEditUser(user)}
-                        className="d-flex align-items-center gap-1"
-                      >
-                        <FiEdit3 />
-                        {t('trainees.buttons.edit')}
-                      </Button>
-                      <Button
-                        variant="outline-danger"
-                        size="sm"
-                        onClick={() => handleDeleteUser(user)}
-                        className="d-flex align-items-center gap-1"
-                      >
-                        <FiTrash />
-                        {t('trainees.buttons.delete')}
-                      </Button>
+                      {!user.deleted_at && (
+                        <>
+                          <Button
+                            variant="outline-primary"
+                            size="sm"
+                            onClick={() => handleEditUser(user)}
+                            className="d-flex align-items-center gap-1"
+                          >
+                            <FiEdit3 />
+                            {t('trainees.buttons.edit')}
+                          </Button>
+                          <Button
+                            variant="outline-danger"
+                            size="sm"
+                            onClick={() => handleDeleteUser(user)}
+                            className="d-flex align-items-center gap-1"
+                          >
+                            <FiTrash />
+                            {t('trainees.buttons.delete')}
+                          </Button>
+                        </>
+                      )}
+                      {user.deleted_at && (
+                        <Button
+                          variant="outline-success"
+                          size="sm"
+                          onClick={() => handleRestoreUser(user)}
+                          className="d-flex align-items-center gap-1"
+                          disabled={restoreLoading}
+                        >
+                          <FiUserCheck />
+                          {restoreLoading ? t('trainees.buttons.loading') : t('trainees.buttons.restore')}
+                        </Button>
+                      )}
                     </div>
                   </td>
                 </tr>
@@ -806,6 +854,11 @@ const Trainees = () => {
           color: white;
           font-weight: bold;
           font-size: 1rem;
+        }
+
+        .user-avatar.deleted {
+          background: linear-gradient(135deg, #6c757d, #495057);
+          opacity: 0.7;
         }
 
         .table th {

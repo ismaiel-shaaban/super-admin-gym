@@ -90,7 +90,9 @@
     "showingResults": "عرض {from} إلى {to} من {total} مستخدم",
     "confirmDelete": "هل أنت متأكد من أنك تريد حذف المستخدم",
     "deleteWarning": "لا يمكن التراجع عن هذا الإجراء.",
-    "passwordPlaceholder": "اتركه فارغًا للاحتفاظ بكلمة المرور الحالية"
+    "passwordPlaceholder": "اتركه فارغًا للاحتفاظ بكلمة المرور الحالية",
+    "restore": "استعادة",
+    "deleted": "محذوف"
   },
   "coaches": {
     "title": "إدارة المدربين",
@@ -115,6 +117,7 @@
       "addCoach": "إضافة مدرب",
       "edit": "تعديل",
       "delete": "حذف",
+      "restore": "استعادة",
       "cancel": "إلغاء",
       "save": "حفظ",
       "loading": "جاري التحميل..."
@@ -139,7 +142,8 @@
       "selectGender": "اختر الجنس",
       "male": "ذكر",
       "female": "أنثى"
-    }
+    },
+    "deleted": "محذوف"
   },
   "trainees": {
     "title": "إدارة المتدربين",
@@ -164,6 +168,7 @@
       "addTrainee": "إضافة متدرب",
       "edit": "تعديل",
       "delete": "حذف",
+      "restore": "استعادة",
       "cancel": "إلغاء",
       "save": "حفظ",
       "loading": "جاري التحميل..."
@@ -188,7 +193,8 @@
       "selectGender": "اختر الجنس",
       "male": "ذكر",
       "female": "أنثى"
-    }
+    },
+    "deleted": "محذوف"
   },
   "navigation": {
     "dashboard": "لوحة التحكم",

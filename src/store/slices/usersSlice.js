@@ -103,6 +103,26 @@ export const deleteUser = createAsyncThunk(
   }
 );
 
+// Async thunk for restoring a user
+export const restoreUser = createAsyncThunk(
+  'users/restoreUser',
+  async (id, { rejectWithValue, getState }) => {
+    try {
+      const token = getState().auth.token;
+      
+      const response = await api.get(`/super-admin/restore/${id}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      return response.data?.data || response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || error.message || 'Network error');
+    }
+  }
+);
+
 const initialState = {
   users: [],
   loading: false,
@@ -113,6 +133,8 @@ const initialState = {
   updateError: null,
   deleteLoading: false,
   deleteError: null,
+  restoreLoading: false,
+  restoreError: null,
   // Pagination state
   currentPage: 1,
   lastPage: 1,
@@ -140,11 +162,15 @@ const usersSlice = createSlice({
     clearDeleteError: (state) => {
       state.deleteError = null;
     },
+    clearRestoreError: (state) => {
+      state.restoreError = null;
+    },
     clearAllErrors: (state) => {
       state.error = null;
       state.createError = null;
       state.updateError = null;
       state.deleteError = null;
+      state.restoreError = null;
     },
     setCurrentPage: (state, action) => {
       state.currentPage = action.payload;
@@ -217,6 +243,22 @@ const usersSlice = createSlice({
       .addCase(deleteUser.rejected, (state, action) => {
         state.deleteLoading = false;
         state.deleteError = action.payload;
+      })
+      // Restore User
+      .addCase(restoreUser.pending, (state) => {
+        state.restoreLoading = true;
+        state.restoreError = null;
+      })
+      .addCase(restoreUser.fulfilled, (state, action) => {
+        state.restoreLoading = false;
+        const index = state.users.findIndex(user => user.id === action.payload.id);
+        if (index !== -1) {
+          state.users[index] = action.payload;
+        }
+      })
+      .addCase(restoreUser.rejected, (state, action) => {
+        state.restoreLoading = false;
+        state.restoreError = action.payload;
       });
   },
 });
@@ -226,6 +268,7 @@ export const {
   clearCreateError, 
   clearUpdateError, 
   clearDeleteError, 
+  clearRestoreError,
   clearAllErrors,
   setCurrentPage
 } = usersSlice.actions;

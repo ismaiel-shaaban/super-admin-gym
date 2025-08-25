@@ -90,7 +90,9 @@
     "showingResults": "Showing {from} to {to} of {total} users",
     "confirmDelete": "Are you sure you want to delete user",
     "deleteWarning": "This action cannot be undone.",
-    "passwordPlaceholder": "Leave blank to keep current password"
+    "passwordPlaceholder": "Leave blank to keep current password",
+    "restore": "Restore",
+    "deleted": "Deleted"
   },
   "coaches": {
     "title": "Coaches Management",
@@ -115,6 +117,7 @@
       "addCoach": "Add Coach",
       "edit": "Edit",
       "delete": "Delete",
+      "restore": "Restore",
       "cancel": "Cancel",
       "save": "Save",
       "loading": "Loading..."
@@ -139,7 +142,8 @@
       "selectGender": "Select Gender",
       "male": "Male",
       "female": "Female"
-    }
+    },
+    "deleted": "Deleted"
   },
   "trainees": {
     "title": "Trainees Management",
@@ -164,6 +168,7 @@
       "addTrainee": "Add Trainee",
       "edit": "Edit",
       "delete": "Delete",
+      "restore": "Restore",
       "cancel": "Cancel",
       "save": "Save",
       "loading": "Loading..."
@@ -188,7 +193,8 @@
       "selectGender": "Select Gender",
       "male": "Male",
       "female": "Female"
-    }
+    },
+    "deleted": "Deleted"
   },
   "navigation": {
     "dashboard": "Dashboard",

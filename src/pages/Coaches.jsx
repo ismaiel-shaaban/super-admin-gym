@@ -8,10 +8,12 @@ import {
   createUser, 
   updateUser, 
   deleteUser,
+  restoreUser,
   clearUsersError,
   clearCreateError,
   clearUpdateError,
   clearDeleteError,
+  clearRestoreError,
   clearAllErrors,
   setCurrentPage
 } from '../store/slices/usersSlice';
@@ -26,7 +28,8 @@ import {
   FiEdit3,
   FiTrash,
   FiChevronLeft,
-  FiChevronRight
+  FiChevronRight,
+  FiUserCheck
 } from 'react-icons/fi';
 import { USER_ROLE_IDS } from '../utils/constants';
 
@@ -45,6 +48,8 @@ const Coaches = () => {
     updateError, 
     deleteLoading, 
     deleteError,
+    restoreLoading,
+    restoreError,
     // Pagination state
     currentPage,
     lastPage,
@@ -203,6 +208,17 @@ const Coaches = () => {
     }
   };
 
+  const handleRestoreUser = async (user) => {
+    try {
+      await dispatch(restoreUser(user.id)).unwrap();
+      dispatch(clearRestoreError());
+      // Refresh current page after restoring user
+      dispatch(fetchUsers({ page: currentPage, role: USER_ROLE_IDS.COACH, search: searchTerm || null }));
+    } catch (error) {
+      console.error('Failed to restore coach:', error);
+    }
+  };
+
   const handlePageChange = (page) => {
     dispatch(setCurrentPage(page));
     dispatch(fetchUsers({ page, role: USER_ROLE_IDS.COACH, search: searchTerm || null }));
@@ -355,7 +371,12 @@ const Coaches = () => {
           <h4 className="mb-0">{t('coaches.title')}</h4>
           <Button 
             variant="primary" 
-            onClick={() => setShowAddModal(true)}
+            onClick={() =>{
+
+              setShowAddModal(true)
+              resetForm();
+            } 
+          }
             className="d-flex align-items-center gap-2"
           >
             <FiUserPlus />
@@ -367,6 +388,11 @@ const Coaches = () => {
           {error && (
             <Alert variant="danger" dismissible onClose={() => dispatch(clearUsersError())}>
               {error}
+            </Alert>
+          )}
+          {restoreError && (
+            <Alert variant="danger" dismissible onClose={() => dispatch(clearRestoreError())}>
+              {restoreError}
             </Alert>
           )}
 
@@ -404,11 +430,18 @@ const Coaches = () => {
                   <td>{user.unique_id || user.id}</td>
                   <td>
                     <div className="d-flex align-items-center gap-2">
-                      <div className="user-avatar">
+                      <div className={`user-avatar ${user.deleted_at ? 'deleted' : ''}`}>
                         <span>{user.user_name?.charAt(0) || 'U'}</span>
                       </div>
                       <div>
-                        <div className="fw-bold">{user.user_name || 'No Name'}</div>
+                        <div className={`fw-bold ${user.deleted_at ? 'text-muted' : ''}`}>
+                          {user.user_name || 'No Name'}
+                          {user.deleted_at && (
+                            <Badge bg="secondary" className="ms-2">
+                              {t('coaches.deleted')}
+                            </Badge>
+                          )}
+                        </div>
                         <small className="text-muted">ID: {user.id}</small>
                       </div>
                     </div>
@@ -419,24 +452,40 @@ const Coaches = () => {
                   <td>{formatDate(user.created_at)}</td>
                   <td>
                     <div className="d-flex gap-2">
-                      <Button
-                        variant="outline-primary"
-                        size="sm"
-                        onClick={() => handleEditUser(user)}
-                        className="d-flex align-items-center gap-1"
-                      >
-                        <FiEdit3 />
-                        {t('coaches.buttons.edit')}
-                      </Button>
-                      <Button
-                        variant="outline-danger"
-                        size="sm"
-                        onClick={() => handleDeleteUser(user)}
-                        className="d-flex align-items-center gap-1"
-                      >
-                        <FiTrash />
-                        {t('coaches.buttons.delete')}
-                      </Button>
+                      {!user.deleted_at && (
+                        <>
+                          <Button
+                            variant="outline-primary"
+                            size="sm"
+                            onClick={() => handleEditUser(user)}
+                            className="d-flex align-items-center gap-1"
+                          >
+                            <FiEdit3 />
+                            {t('coaches.buttons.edit')}
+                          </Button>
+                          <Button
+                            variant="outline-danger"
+                            size="sm"
+                            onClick={() => handleDeleteUser(user)}
+                            className="d-flex align-items-center gap-1"
+                          >
+                            <FiTrash />
+                            {t('coaches.buttons.delete')}
+                          </Button>
+                        </>
+                      )}
+                      {user.deleted_at && (
+                        <Button
+                          variant="outline-success"
+                          size="sm"
+                          onClick={() => handleRestoreUser(user)}
+                          className="d-flex align-items-center gap-1"
+                          disabled={restoreLoading}
+                        >
+                          <FiUserCheck />
+                          {restoreLoading ? t('coaches.buttons.loading') : t('coaches.buttons.restore')}
+                        </Button>
+                      )}
                     </div>
                   </td>
                 </tr>
@@ -561,6 +610,7 @@ const Coaches = () => {
                   <Form.Control
                     type="date"
                     name="birthdate"
+                    className="date-input"
                     value={formData.birthdate}
                     onChange={handleInputChange}
                   />
@@ -806,6 +856,11 @@ const Coaches = () => {
           color: white;
           font-weight: bold;
           font-size: 1rem;
+        }
+
+        .user-avatar.deleted {
+          background: linear-gradient(135deg, #6c757d, #495057);
+          opacity: 0.7;
         }
 
         .table th {

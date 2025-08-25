@@ -8,10 +8,12 @@ import {
   createUser, 
   updateUser, 
   deleteUser,
+  restoreUser,
   clearUsersError,
   clearCreateError,
   clearUpdateError,
   clearDeleteError,
+  clearRestoreError,
   clearAllErrors,
   setCurrentPage
 } from '../store/slices/usersSlice';
@@ -43,6 +45,8 @@ const Users = () => {
     updateError, 
     deleteLoading, 
     deleteError,
+    restoreLoading,
+    restoreError,
     // Pagination state
     currentPage,
     lastPage,
@@ -166,6 +170,17 @@ const Users = () => {
       dispatch(fetchUsers({ page: currentPage, search: searchTerm || null }));
     } catch (error) {
       console.error('Failed to delete user:', error);
+    }
+  };
+
+  const handleRestoreUser = async (user) => {
+    try {
+      await dispatch(restoreUser(user.id)).unwrap();
+      dispatch(clearRestoreError());
+      // Refresh current page after restoring user
+      dispatch(fetchUsers({ page: currentPage, search: searchTerm || null }));
+    } catch (error) {
+      console.error('Failed to restore user:', error);
     }
   };
 
@@ -335,6 +350,11 @@ const Users = () => {
               {error}
             </Alert>
           )}
+          {restoreError && (
+            <Alert variant="danger" dismissible onClose={() => dispatch(clearRestoreError())}>
+              {restoreError}
+            </Alert>
+          )}
 
           {/* Search Bar */}
           <div className="mb-3">
@@ -370,41 +390,64 @@ const Users = () => {
                   <td>{user.unique_id || user.id}</td>
                   <td>
                     <div className="d-flex align-items-center gap-2">
-                      <div className="user-avatar">
+                      <div className={`user-avatar ${user.deleted_at ? 'deleted' : ''}`}>
                         <span>{user.user_name?.charAt(0) || 'U'}</span>
                       </div>
                       <div>
-                        <div className="fw-bold">{user.user_name || 'No Name'}</div>
-                        <small className="text-muted">ID: {user.id}</small>
+                        <div className={`fw-bold ${user.deleted_at ? 'text-muted' : ''}`}>
+                          {user.user_name || 'No Name'}
+                          {user.deleted_at && (
+                            <Badge bg="secondary" className="ms-2">
+                              {t('users.deleted')}
+                            </Badge>
+                          )}
                         </div>
+                        <small className="text-muted">ID: {user.id}</small>
                       </div>
-                    </td>
+                    </div>
+                  </td>
                   <td>{user.email || '-'}</td>
                   <td>{user.phone || '-'}</td>
                   <td>{getRoleBadge(user.roles)}</td>
                   <td>{formatDate(user.created_at)}</td>
                   <td>
                     <div className="d-flex gap-2">
+                      {!user.deleted_at && (
+                        <>
+                          <Button
+                            variant="outline-primary"
+                            size="sm"
+                            onClick={() => handleEditUser(user)}
+                            className="d-flex align-items-center gap-1"
+                          >
+                            <FiEdit3 />
+                            {t('common.edit')}
+                          </Button>
+                          <Button
+                            variant="outline-danger"
+                            size="sm"
+                            onClick={() => handleDeleteUser(user)}
+                            className="d-flex align-items-center gap-1"
+                          >
+                            <FiTrash />
+                            {t('common.delete')}
+                          </Button>
+                        </>
+                      )}
+                      {user.deleted_at && (
                         <Button
-                          variant="outline-primary"
+                          variant="outline-success"
                           size="sm"
-                        onClick={() => handleEditUser(user)}
-                        className="d-flex align-items-center gap-1"
+                          onClick={() => handleRestoreUser(user)}
+                          className="d-flex align-items-center gap-1"
+                          disabled={restoreLoading}
                         >
-                        <FiEdit3 />
-                          {t('common.edit')}
+                          <FiUserCheck />
+                          {restoreLoading ? t('common.loading') : t('users.restore')}
                         </Button>
-                        <Button
-                          variant="outline-danger"
-                          size="sm"
-                        onClick={() => handleDeleteUser(user)}
-                        className="d-flex align-items-center gap-1"
-                        >
-                        <FiTrash />
-                          {t('common.delete')}
-                        </Button>
-                      </div>
-                    </td>
+                      )}
+                    </div>
+                  </td>
                   </tr>
                 ))}
               </tbody>
@@ -680,6 +723,11 @@ const Users = () => {
           color: white;
           font-weight: bold;
           font-size: 1rem;
+        }
+
+        .user-avatar.deleted {
+          background: linear-gradient(135deg, #6c757d, #495057);
+          opacity: 0.7;
         }
 
         .table th {
