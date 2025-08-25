@@ -1,0 +1,496 @@
+{
+  "common": {
+    "login": "Login",
+    "logout": "Logout",
+    "email": "Email",
+    "password": "Password",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "search": "Search",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "warning": "Warning",
+    "info": "Information",
+    "confirm": "Confirm",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "close": "Close",
+    "open": "Open",
+    "toggle": "Toggle",
+    "settings": "Settings",
+    "profile": "Profile",
+    "dashboard": "Dashboard",
+    "users": "Users",
+    "reports": "Reports",
+    "analytics": "Analytics",
+    "notifications": "Notifications",
+    "help": "Help",
+    "about": "About",
+    "contact": "Contact",
+    "language": "Language",
+    "theme": "Theme",
+    "dark": "Dark",
+    "light": "Light",
+    "english": "English",
+    "arabic": "Arabic"
+  },
+  "auth": {
+    "loginTitle": "Admin Login",
+    "loginSubtitle": "Enter your credentials to access the dashboard",
+    "emailPlaceholder": "Enter your email",
+    "passwordPlaceholder": "Enter your password",
+    "rememberMe": "Remember me",
+    "forgotPassword": "Forgot password?",
+    "loginButton": "Sign In",
+    "loginError": "Invalid email or password",
+    "logoutConfirm": "Are you sure you want to logout?",
+    "welcome": "Welcome back!"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "overview": "Overview",
+    "totalUsers": "Total Users",
+    "activeUsers": "Active Users",
+    "newUsers": "New Users",
+    "totalRevenue": "Total Revenue",
+    "recentActivity": "Recent Activity",
+    "quickActions": "Quick Actions",
+    "viewAll": "View All"
+  },
+  "users": {
+    "title": "User Management",
+    "addUser": "Add User",
+    "editUser": "Edit User",
+    "deleteUser": "Delete User",
+    "userDetails": "User Details",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "role": "Role",
+    "status": "Status",
+    "createdAt": "Created At",
+    "lastLogin": "Last Login",
+    "actions": "Actions",
+    "active": "Active",
+    "inactive": "Inactive",
+    "admin": "Admin",
+    "user": "User",
+    "moderator": "Moderator",
+    "coach": "Coach",
+    "superAdmin": "Super Admin",
+    "trainee": "Trainee",
+    "noRole": "No Role",
+    "noUsersFound": "No users found",
+    "showingResults": "Showing {from} to {to} of {total} users",
+    "confirmDelete": "Are you sure you want to delete user",
+    "deleteWarning": "This action cannot be undone.",
+    "passwordPlaceholder": "Leave blank to keep current password"
+  },
+  "coaches": {
+    "title": "Coaches Management",
+    "addCoach": "Add Coach",
+    "editCoach": "Edit Coach",
+    "deleteCoach": "Delete Coach",
+    "searchPlaceholder": "Search coaches...",
+    "noCoachesFound": "No coaches found",
+    "showingResults": "Showing {from} to {to} of {total} coaches",
+    "confirmDelete": "Are you sure you want to delete coach",
+    "deleteWarning": "This action cannot be undone.",
+    "tableHeaders": {
+      "id": "ID",
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "role": "Role",
+      "createdAt": "Created At",
+      "actions": "Actions"
+    },
+    "buttons": {
+      "addCoach": "Add Coach",
+      "edit": "Edit",
+      "delete": "Delete",
+      "cancel": "Cancel",
+      "save": "Save",
+      "loading": "Loading..."
+    },
+    "modals": {
+      "addTitle": "Add Coach",
+      "editTitle": "Edit Coach",
+      "deleteTitle": "Delete Coach"
+    },
+    "formLabels": {
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "role": "Role",
+      "password": "Password",
+      "passwordPlaceholder": "Leave blank to keep current password",
+      "passwordConfirmation": "Password Confirmation",
+      "country": "Country",
+      "selectCountry": "Select Country",
+      "birthdate": "Birth Date",
+      "gender": "Gender",
+      "selectGender": "Select Gender",
+      "male": "Male",
+      "female": "Female"
+    }
+  },
+  "trainees": {
+    "title": "Trainees Management",
+    "addTrainee": "Add Trainee",
+    "editTrainee": "Edit Trainee",
+    "deleteTrainee": "Delete Trainee",
+    "searchPlaceholder": "Search trainees...",
+    "noTraineesFound": "No trainees found",
+    "showingResults": "Showing {from} to {to} of {total} trainees",
+    "confirmDelete": "Are you sure you want to delete trainee",
+    "deleteWarning": "This action cannot be undone.",
+    "tableHeaders": {
+      "id": "ID",
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "role": "Role",
+      "createdAt": "Created At",
+      "actions": "Actions"
+    },
+    "buttons": {
+      "addTrainee": "Add Trainee",
+      "edit": "Edit",
+      "delete": "Delete",
+      "cancel": "Cancel",
+      "save": "Save",
+      "loading": "Loading..."
+    },
+    "modals": {
+      "addTitle": "Add Trainee",
+      "editTitle": "Edit Trainee",
+      "deleteTitle": "Delete Trainee"
+    },
+    "formLabels": {
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "role": "Role",
+      "password": "Password",
+      "passwordPlaceholder": "Leave blank to keep current password",
+      "passwordConfirmation": "Password Confirmation",
+      "country": "Country",
+      "selectCountry": "Select Country",
+      "birthdate": "Birth Date",
+      "gender": "Gender",
+      "selectGender": "Select Gender",
+      "male": "Male",
+      "female": "Female"
+    }
+  },
+  "navigation": {
+    "dashboard": "Dashboard",
+    "users": "Users",
+    "coaches": "Coaches",
+    "trainees": "Trainees",
+    "reports": "Reports",
+    "analytics": "Analytics",
+    "settings": "Settings",
+    "slider": "Slider",
+    "topics": "Topics",
+    "questionGroups": "Question Groups",
+    "coachesLedger": "Coaches Ledger",
+    "traineesLedger": "Trainees Ledger",
+    "profile": "Profile",
+    "logout": "Logout"
+  },
+  "sidebar": {
+    "menu": "Menu",
+    "collapse": "Collapse",
+    "expand": "Expand"
+  },
+  "navbar": {
+    "search": "Search...",
+    "notifications": "Notifications",
+    "profile": "Profile",
+    "settings": "Settings",
+    "logout": "Logout"
+  },
+  "settings": {
+    "title": "App Settings",
+    "subtitle": "Manage your application images and configurations",
+    "updateSettings": "Update Settings",
+    "settingsUpdated": "Settings updated successfully!",
+    "formLabels": {
+      "homeScreen": "Home Screen Image",
+      "splashScreen": "Splash Screen Images",
+      "exerciseScreen": "Exercise Screen Image",
+      "imagesToDelete": "Images to Delete"
+    },
+    "buttons": {
+      "update": "Update Settings",
+      "cancel": "Cancel",
+      "loading": "Loading..."
+    },
+    "currentImages": "Current Images",
+    "uploadNewImages": "Upload New Images",
+    "selectImagesToDelete": "Select images to delete",
+    "dragDropText": "Drag and drop images here",
+    "clickToBrowse": "or click to browse files",
+    "imageFilesOnly": "Image files only",
+    "newImage": "New",
+    "removeImage": "Remove",
+    "imageCount": "image",
+    "imageCount_plural": "images",
+    "waitingForData": "Waiting for settings data to load...",
+    "markedForDeletion": "marked for deletion"
+  },
+  "slider": {
+    "title": "Slider Management",
+    "addSlide": "Add Slide",
+    "editSlide": "Edit Slide",
+    "deleteSlide": "Delete Slide",
+    "searchPlaceholder": "Search slides...",
+    "noSlidesFound": "No slides found",
+    "confirmDelete": "Are you sure you want to delete this slide?",
+    "deleteWarning": "This action cannot be undone.",
+    "tableHeaders": {
+      "id": "ID",
+      "title": "Title",
+      "image": "Image",
+      "createdAt": "Created At",
+      "actions": "Actions"
+    },
+    "buttons": {
+      "addSlide": "Add Slide",
+      "edit": "Edit",
+      "delete": "Delete",
+      "cancel": "Cancel",
+      "save": "Save",
+      "loading": "Loading..."
+    },
+    "modals": {
+      "addTitle": "Add Slide",
+      "editTitle": "Edit Slide",
+      "deleteTitle": "Delete Slide"
+    },
+    "formLabels": {
+      "title": "Title",
+      "image": "Image",
+      "selectImage": "Select Image"
+    }
+  },
+  "topics": {
+    "title": "Topics Management",
+    "addTopic": "Add Topic",
+    "editTopic": "Edit Topic",
+    "deleteTopic": "Delete Topic",
+    "searchPlaceholder": "Search topics...",
+    "noTopicsFound": "No topics found",
+    "confirmDelete": "Are you sure you want to delete topic",
+    "deleteWarning": "This action cannot be undone.",
+    "tableHeaders": {
+      "id": "ID",
+      "name": "Name",
+      "slug": "Slug",
+      "createdAt": "Created At",
+      "actions": "Actions"
+    },
+    "buttons": {
+      "addTopic": "Add Topic",
+      "edit": "Edit",
+      "delete": "Delete",
+      "cancel": "Cancel",
+      "save": "Save",
+      "loading": "Loading..."
+    },
+    "modals": {
+      "addTitle": "Add Topic",
+      "editTitle": "Edit Topic",
+      "deleteTitle": "Delete Topic"
+    },
+    "formLabels": {
+      "nameEn": "Name (English)",
+      "nameAr": "Name (Arabic)",
+      "slug": "Slug"
+    }
+  },
+  "coachesLedger": {
+    "title": "Coaches Ledger",
+    "titleIndividual": "Coach Ledger Details",
+    "searchPlaceholder": "Search coaches ledger...",
+    "noDataFound": "No ledger data found",
+    "dateFrom": "Date From",
+    "dateTo": "Date To",
+    "coachInfo": "Coach Information",
+    "coachDetails": {
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "totalBalance": "Total Balance"
+    },
+    "tableHeaders": {
+      "coach": "Coach",
+      "transactionType": "Transaction Type",
+      "amount": "Amount",
+      "description": "Description",
+      "date": "Date",
+      "actions": "Actions"
+    },
+    "transactionTypes": {
+      "credit": "Credit",
+      "debit": "Debit"
+    },
+    "buttons": {
+      "view": "View",
+      "backToList": "Back to List",
+      "filter": "Filter"
+    }
+  },
+  "traineesLedger": {
+    "title": "Trainees Ledger",
+    "titleIndividual": "Trainee Ledger Details",
+    "searchPlaceholder": "Search trainees ledger...",
+    "noDataFound": "No ledger data found",
+    "dateFrom": "Date From",
+    "dateTo": "Date To",
+    "traineeInfo": "Trainee Information",
+    "traineeDetails": {
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "totalSpending": "Total Spending"
+    },
+    "tableHeaders": {
+      "trainee": "Trainee",
+      "subscriptions": "Subscriptions",
+      "spending": "Spending",
+      "coaches": "Coaches",
+      "actions": "Actions"
+    },
+    "subscriptionHeaders": {
+      "course": "Course",
+      "coach": "Coach",
+      "status": "Status",
+      "price": "Price",
+      "dates": "Dates"
+    },
+    "subscriptionStatus": {
+      "active": "Active",
+      "pending": "Pending",
+      "waiting_for_payment": "Waiting for Payment",
+      "cancelled": "Cancelled",
+      "expired": "Expired"
+    },
+    "subscriptionDetails": "Subscription Details",
+    "subscriptionSummary": "Subscription Summary",
+    "total": "Total",
+    "active": "Active",
+    "coaches": "Coaches",
+    "created": "Created",
+    "ends": "Ends",
+    "totalSubscriptions": "Total Subscriptions",
+    "activeSubscriptions": "Active Subscriptions",
+    "totalSpending": "Total Spending",
+    "totalCoaches": "Total Coaches",
+         "coachesInformation": "Coaches Information",
+     "transactionSummary": "Transaction Summary",
+     "transactionHeaders": {
+       "subscription": "Subscription",
+       "amount": "Amount",
+       "status": "Status",
+       "date": "Date"
+     },
+     "transactionStatus": {
+       "completed": "Completed",
+       "pending": "Pending",
+       "failed": "Failed",
+       "cancelled": "Cancelled"
+     },
+     "coachHeaders": {
+       "name": "Coach Name",
+       "subscriptions": "Subscriptions",
+       "spending": "Spending"
+     },
+    "buttons": {
+      "view": "View",
+      "backToList": "Back to List",
+      "filter": "Filter"
+    }
+  },
+  "questionGroups": {
+    "title": "Question Groups",
+    "addGroup": "Add Question Group",
+    "editGroup": "Edit Question Group",
+    "deleteGroup": "Delete Question Group",
+    "groupDetails": "Question Group Details",
+    "searchPlaceholder": "Search question groups...",
+    "noGroupsFound": "No question groups found",
+    "confirmDeleteGroup": "Are you sure you want to delete this question group?",
+    "deleteGroupWarning": "This will also delete all questions in this group.",
+    "groupForm": {
+      "titleAr": "Arabic Title",
+      "titleArPlaceholder": "Enter Arabic title",
+      "titleEn": "English Title",
+      "titleEnPlaceholder": "Enter English title"
+    },
+    "tableHeaders": {
+      "name": "Group Name",
+      "description": "Description",
+      "questionsCount": "Questions Count",
+      "actions": "Actions"
+    },
+    "buttons": {
+      "addGroup": "Add Group",
+      "editGroup": "Edit Group",
+      "deleteGroup": "Delete Group",
+      "viewQuestions": "View Questions",
+      "backToGroups": "Back to Groups"
+    },
+    "questions": {
+      "title": "Questions",
+      "addQuestion": "Add Question",
+      "editQuestion": "Edit Question",
+      "deleteQuestion": "Delete Question",
+      "searchPlaceholder": "Search questions...",
+      "noQuestionsFound": "No questions found",
+      "confirmDeleteQuestion": "Are you sure you want to delete this question?",
+      "deleteQuestionWarning": "This action cannot be undone.",
+      "questionForm": {
+        "image": "Question Image",
+        "type": "Question Type",
+        "descriptionAr": "Arabic Description",
+        "descriptionArPlaceholder": "Enter Arabic description",
+        "descriptionEn": "English Description",
+        "descriptionEnPlaceholder": "Enter English description",
+        "answers": "Answers",
+        "addAnswer": "Add Answer",
+        "answer": "Answer",
+        "answerAr": "Arabic Answer",
+        "answerArPlaceholder": "Enter Arabic answer",
+        "answerEn": "English Answer",
+        "answerEnPlaceholder": "Enter English answer"
+      },
+      "tableHeaders": {
+        "description": "Description",
+        "type": "Type",
+        "answers": "Answers",
+        "image": "Image",
+        "answersCount": "Answers Count",
+        "actions": "Actions"
+      },
+      "questionTypes": {
+        "multiple_choice": "Multiple Choice",
+        "essay": "Essay"
+      },
+      "buttons": {
+        "addQuestion": "Add Question",
+        "editQuestion": "Edit Question",
+        "deleteQuestion": "Delete Question",
+        "backToGroup": "Back to Group"
+      }
+    }
+  }
+} 

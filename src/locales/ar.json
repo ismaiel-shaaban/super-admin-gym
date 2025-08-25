@@ -1,0 +1,496 @@
+{
+  "common": {
+    "login": "تسجيل الدخول",
+    "logout": "تسجيل الخروج",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "submit": "إرسال",
+    "cancel": "إلغاء",
+    "save": "حفظ",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "add": "إضافة",
+    "search": "بحث",
+    "loading": "جاري التحميل...",
+    "error": "خطأ",
+    "success": "نجح",
+    "warning": "تحذير",
+    "info": "معلومات",
+    "confirm": "تأكيد",
+    "back": "رجوع",
+    "next": "التالي",
+    "previous": "السابق",
+    "close": "إغلاق",
+    "open": "فتح",
+    "toggle": "تبديل",
+    "settings": "الإعدادات",
+    "profile": "الملف الشخصي",
+    "dashboard": "لوحة التحكم",
+    "users": "المستخدمين",
+    "reports": "التقارير",
+    "analytics": "التحليلات",
+    "notifications": "الإشعارات",
+    "help": "المساعدة",
+    "about": "حول",
+    "contact": "اتصل بنا",
+    "language": "اللغة",
+    "theme": "المظهر",
+    "dark": "داكن",
+    "light": "فاتح",
+    "english": "الإنجليزية",
+    "arabic": "العربية"
+  },
+  "auth": {
+    "loginTitle": "تسجيل دخول المدير",
+    "loginSubtitle": "أدخل بيانات الاعتماد الخاصة بك للوصول إلى لوحة التحكم",
+    "emailPlaceholder": "أدخل بريدك الإلكتروني",
+    "passwordPlaceholder": "أدخل كلمة المرور",
+    "rememberMe": "تذكرني",
+    "forgotPassword": "نسيت كلمة المرور؟",
+    "loginButton": "تسجيل الدخول",
+    "loginError": "البريد الإلكتروني أو كلمة المرور غير صحيحة",
+    "logoutConfirm": "هل أنت متأكد من أنك تريد تسجيل الخروج؟",
+    "welcome": "مرحباً بعودتك!"
+  },
+  "dashboard": {
+    "title": "لوحة التحكم",
+    "overview": "نظرة عامة",
+    "totalUsers": "إجمالي المستخدمين",
+    "activeUsers": "المستخدمين النشطين",
+    "newUsers": "المستخدمين الجدد",
+    "totalRevenue": "إجمالي الإيرادات",
+    "recentActivity": "النشاط الأخير",
+    "quickActions": "الإجراءات السريعة",
+    "viewAll": "عرض الكل"
+  },
+  "users": {
+    "title": "إدارة المستخدمين",
+    "addUser": "إضافة مستخدم",
+    "editUser": "تعديل المستخدم",
+    "deleteUser": "حذف المستخدم",
+    "userDetails": "تفاصيل المستخدم",
+    "name": "الاسم",
+    "email": "البريد الإلكتروني",
+    "phone": "الهاتف",
+    "role": "الدور",
+    "status": "الحالة",
+    "createdAt": "تاريخ الإنشاء",
+    "lastLogin": "آخر تسجيل دخول",
+    "actions": "الإجراءات",
+    "active": "نشط",
+    "inactive": "غير نشط",
+    "admin": "مدير",
+    "user": "مستخدم",
+    "moderator": "مشرف",
+    "coach": "مدرب",
+    "superAdmin": "مدير عام",
+    "trainee": "متدرب",
+    "noRole": "لا يوجد دور",
+    "noUsersFound": "لم يتم العثور على مستخدمين",
+    "showingResults": "عرض {from} إلى {to} من {total} مستخدم",
+    "confirmDelete": "هل أنت متأكد من أنك تريد حذف المستخدم",
+    "deleteWarning": "لا يمكن التراجع عن هذا الإجراء.",
+    "passwordPlaceholder": "اتركه فارغًا للاحتفاظ بكلمة المرور الحالية"
+  },
+  "coaches": {
+    "title": "إدارة المدربين",
+    "addCoach": "إضافة مدرب",
+    "editCoach": "تعديل المدرب",
+    "deleteCoach": "حذف المدرب",
+    "searchPlaceholder": "البحث في المدربين...",
+    "noCoachesFound": "لم يتم العثور على مدربين",
+    "showingResults": "عرض {from} إلى {to} من {total} مدرب",
+    "confirmDelete": "هل أنت متأكد من أنك تريد حذف المدرب",
+    "deleteWarning": "لا يمكن التراجع عن هذا الإجراء.",
+    "tableHeaders": {
+      "id": "الرقم",
+      "name": "الاسم",
+      "email": "البريد الإلكتروني",
+      "phone": "الهاتف",
+      "role": "الدور",
+      "createdAt": "تاريخ الإنشاء",
+      "actions": "الإجراءات"
+    },
+    "buttons": {
+      "addCoach": "إضافة مدرب",
+      "edit": "تعديل",
+      "delete": "حذف",
+      "cancel": "إلغاء",
+      "save": "حفظ",
+      "loading": "جاري التحميل..."
+    },
+    "modals": {
+      "addTitle": "إضافة مدرب",
+      "editTitle": "تعديل المدرب",
+      "deleteTitle": "حذف المدرب"
+    },
+    "formLabels": {
+      "name": "الاسم",
+      "email": "البريد الإلكتروني",
+      "phone": "الهاتف",
+      "role": "الدور",
+      "password": "كلمة المرور",
+      "passwordPlaceholder": "اتركه فارغًا للاحتفاظ بكلمة المرور الحالية",
+      "passwordConfirmation": "تأكيد كلمة المرور",
+      "country": "البلد",
+      "selectCountry": "اختر البلد",
+      "birthdate": "تاريخ الميلاد",
+      "gender": "الجنس",
+      "selectGender": "اختر الجنس",
+      "male": "ذكر",
+      "female": "أنثى"
+    }
+  },
+  "trainees": {
+    "title": "إدارة المتدربين",
+    "addTrainee": "إضافة متدرب",
+    "editTrainee": "تعديل المتدرب",
+    "deleteTrainee": "حذف المتدرب",
+    "searchPlaceholder": "البحث في المتدربين...",
+    "noTraineesFound": "لم يتم العثور على متدربين",
+    "showingResults": "عرض {from} إلى {to} من {total} متدرب",
+    "confirmDelete": "هل أنت متأكد من أنك تريد حذف المتدرب",
+    "deleteWarning": "لا يمكن التراجع عن هذا الإجراء.",
+    "tableHeaders": {
+      "id": "الرقم",
+      "name": "الاسم",
+      "email": "البريد الإلكتروني",
+      "phone": "الهاتف",
+      "role": "الدور",
+      "createdAt": "تاريخ الإنشاء",
+      "actions": "الإجراءات"
+    },
+    "buttons": {
+      "addTrainee": "إضافة متدرب",
+      "edit": "تعديل",
+      "delete": "حذف",
+      "cancel": "إلغاء",
+      "save": "حفظ",
+      "loading": "جاري التحميل..."
+    },
+    "modals": {
+      "addTitle": "إضافة متدرب",
+      "editTitle": "تعديل المتدرب",
+      "deleteTitle": "حذف المتدرب"
+    },
+    "formLabels": {
+      "name": "الاسم",
+      "email": "البريد الإلكتروني",
+      "phone": "الهاتف",
+      "role": "الدور",
+      "password": "كلمة المرور",
+      "passwordPlaceholder": "اتركه فارغًا للاحتفاظ بكلمة المرور الحالية",
+      "passwordConfirmation": "تأكيد كلمة المرور",
+      "country": "البلد",
+      "selectCountry": "اختر البلد",
+      "birthdate": "تاريخ الميلاد",
+      "gender": "الجنس",
+      "selectGender": "اختر الجنس",
+      "male": "ذكر",
+      "female": "أنثى"
+    }
+  },
+  "navigation": {
+    "dashboard": "لوحة التحكم",
+    "users": "المستخدمين",
+    "coaches": "المدربين",
+    "trainees": "المتدربين",
+    "reports": "التقارير",
+    "analytics": "التحليلات",
+    "settings": "الإعدادات",
+    "slider": "الشرائح",
+    "topics": "المواضيع",
+    "questionGroups": "مجموعات الأسئلة",
+    "coachesLedger": "دفتر المدربين",
+    "traineesLedger": "دفتر المتدربين",
+    "profile": "الملف الشخصي",
+    "logout": "تسجيل الخروج"
+  },
+  "sidebar": {
+    "menu": "القائمة",
+    "collapse": "طي",
+    "expand": "توسيع"
+  },
+  "navbar": {
+    "search": "بحث...",
+    "notifications": "الإشعارات",
+    "profile": "الملف الشخصي",
+    "settings": "الإعدادات",
+    "logout": "تسجيل الخروج"
+  },
+  "settings": {
+    "title": "إعدادات التطبيق",
+    "subtitle": "إدارة صور التطبيق والإعدادات",
+    "updateSettings": "تحديث الإعدادات",
+    "settingsUpdated": "تم تحديث الإعدادات بنجاح!",
+    "formLabels": {
+      "homeScreen": "صورة الشاشة الرئيسية",
+      "splashScreen": "صور شاشة البداية",
+      "exerciseScreen": "صورة شاشة التمارين",
+      "imagesToDelete": "الصور المراد حذفها"
+    },
+    "buttons": {
+      "update": "تحديث الإعدادات",
+      "cancel": "إلغاء",
+      "loading": "جاري التحميل..."
+    },
+    "currentImages": "الصور الحالية",
+    "uploadNewImages": "رفع صور جديدة",
+    "selectImagesToDelete": "اختر الصور المراد حذفها",
+    "dragDropText": "اسحب وأفلت الصور هنا",
+    "clickToBrowse": "أو انقر لتصفح الملفات",
+    "imageFilesOnly": "ملفات الصور فقط",
+    "newImage": "جديد",
+    "removeImage": "إزالة",
+    "imageCount": "صورة",
+    "imageCount_plural": "صور",
+    "waitingForData": "في انتظار تحميل بيانات الإعدادات...",
+    "markedForDeletion": "محدد للحذف"
+  },
+  "slider": {
+    "title": "إدارة الشرائح",
+    "addSlide": "إضافة شريحة",
+    "editSlide": "تعديل الشريحة",
+    "deleteSlide": "حذف الشريحة",
+    "searchPlaceholder": "البحث في الشرائح...",
+    "noSlidesFound": "لم يتم العثور على شرائح",
+    "confirmDelete": "هل أنت متأكد من أنك تريد حذف هذه الشريحة؟",
+    "deleteWarning": "لا يمكن التراجع عن هذا الإجراء.",
+    "tableHeaders": {
+      "id": "الرقم",
+      "title": "العنوان",
+      "image": "الصورة",
+      "createdAt": "تاريخ الإنشاء",
+      "actions": "الإجراءات"
+    },
+    "buttons": {
+      "addSlide": "إضافة شريحة",
+      "edit": "تعديل",
+      "delete": "حذف",
+      "cancel": "إلغاء",
+      "save": "حفظ",
+      "loading": "جاري التحميل..."
+    },
+    "modals": {
+      "addTitle": "إضافة شريحة",
+      "editTitle": "تعديل الشريحة",
+      "deleteTitle": "حذف الشريحة"
+    },
+    "formLabels": {
+      "title": "العنوان",
+      "image": "الصورة",
+      "selectImage": "اختر الصورة"
+    }
+  },
+  "topics": {
+    "title": "إدارة المواضيع",
+    "addTopic": "إضافة موضوع",
+    "editTopic": "تعديل الموضوع",
+    "deleteTopic": "حذف الموضوع",
+    "searchPlaceholder": "البحث في المواضيع...",
+    "noTopicsFound": "لم يتم العثور على مواضيع",
+    "confirmDelete": "هل أنت متأكد من أنك تريد حذف الموضوع",
+    "deleteWarning": "لا يمكن التراجع عن هذا الإجراء.",
+    "tableHeaders": {
+      "id": "الرقم",
+      "name": "الاسم",
+      "slug": "الرابط",
+      "createdAt": "تاريخ الإنشاء",
+      "actions": "الإجراءات"
+    },
+    "buttons": {
+      "addTopic": "إضافة موضوع",
+      "edit": "تعديل",
+      "delete": "حذف",
+      "cancel": "إلغاء",
+      "save": "حفظ",
+      "loading": "جاري التحميل..."
+    },
+    "modals": {
+      "addTitle": "إضافة موضوع",
+      "editTitle": "تعديل الموضوع",
+      "deleteTitle": "حذف الموضوع"
+    },
+    "formLabels": {
+      "nameEn": "الاسم (الإنجليزية)",
+      "nameAr": "الاسم (العربية)",
+      "slug": "الرابط"
+    }
+  },
+  "coachesLedger": {
+    "title": "دفتر المدربين",
+    "titleIndividual": "تفاصيل دفتر المدرب",
+    "searchPlaceholder": "البحث في دفتر المدربين...",
+    "noDataFound": "لم يتم العثور على بيانات الدفتر",
+    "dateFrom": "التاريخ من",
+    "dateTo": "التاريخ إلى",
+    "coachInfo": "معلومات المدرب",
+    "coachDetails": {
+      "name": "الاسم",
+      "email": "البريد الإلكتروني",
+      "phone": "الهاتف",
+      "totalBalance": "الرصيد الإجمالي"
+    },
+    "tableHeaders": {
+      "coach": "المدرب",
+      "transactionType": "نوع المعاملة",
+      "amount": "المبلغ",
+      "description": "الوصف",
+      "date": "التاريخ",
+      "actions": "الإجراءات"
+    },
+    "transactionTypes": {
+      "credit": "إيداع",
+      "debit": "سحب"
+    },
+    "buttons": {
+      "view": "عرض",
+      "backToList": "العودة إلى القائمة",
+      "filter": "تصفية"
+    }
+  },
+  "traineesLedger": {
+    "title": "دفتر المتدربين",
+    "titleIndividual": "تفاصيل دفتر المتدرب",
+    "searchPlaceholder": "البحث في دفتر المتدربين...",
+    "noDataFound": "لم يتم العثور على بيانات الدفتر",
+    "dateFrom": "التاريخ من",
+    "dateTo": "التاريخ إلى",
+    "traineeInfo": "معلومات المتدرب",
+    "traineeDetails": {
+      "name": "الاسم",
+      "email": "البريد الإلكتروني",
+      "phone": "الهاتف",
+      "totalSpending": "إجمالي الإنفاق"
+    },
+    "tableHeaders": {
+      "trainee": "المتدرب",
+      "subscriptions": "الاشتراكات",
+      "spending": "الإنفاق",
+      "coaches": "المدربين",
+      "actions": "الإجراءات"
+    },
+    "subscriptionHeaders": {
+      "course": "الدورة",
+      "coach": "المدرب",
+      "status": "الحالة",
+      "price": "السعر",
+      "dates": "التواريخ"
+    },
+    "subscriptionStatus": {
+      "active": "نشط",
+      "pending": "في الانتظار",
+      "waiting_for_payment": "في انتظار الدفع",
+      "cancelled": "ملغي",
+      "expired": "منتهي الصلاحية"
+    },
+    "subscriptionDetails": "تفاصيل الاشتراكات",
+    "subscriptionSummary": "ملخص الاشتراكات",
+    "total": "الإجمالي",
+    "active": "النشط",
+    "coaches": "المدربين",
+    "created": "تاريخ الإنشاء",
+    "ends": "تاريخ الانتهاء",
+    "totalSubscriptions": "إجمالي الاشتراكات",
+    "activeSubscriptions": "الاشتراكات النشطة",
+    "totalSpending": "إجمالي الإنفاق",
+    "totalCoaches": "إجمالي المدربين",
+         "coachesInformation": "معلومات المدربين",
+     "transactionSummary": "ملخص المعاملات",
+     "transactionHeaders": {
+       "subscription": "الاشتراك",
+       "amount": "المبلغ",
+       "status": "الحالة",
+       "date": "التاريخ"
+     },
+     "transactionStatus": {
+       "completed": "مكتمل",
+       "pending": "في الانتظار",
+       "failed": "فشل",
+       "cancelled": "ملغي"
+     },
+     "coachHeaders": {
+       "name": "اسم المدرب",
+       "subscriptions": "الاشتراكات",
+       "spending": "الإنفاق"
+     },
+    "buttons": {
+      "view": "عرض",
+      "backToList": "العودة إلى القائمة",
+      "filter": "تصفية"
+    }
+  },
+  "questionGroups": {
+    "title": "مجموعات الأسئلة",
+    "addGroup": "إضافة مجموعة أسئلة",
+    "editGroup": "تعديل مجموعة الأسئلة",
+    "deleteGroup": "حذف مجموعة الأسئلة",
+    "groupDetails": "تفاصيل مجموعة الأسئلة",
+    "searchPlaceholder": "البحث في مجموعات الأسئلة...",
+    "noGroupsFound": "لم يتم العثور على مجموعات أسئلة",
+    "confirmDeleteGroup": "هل أنت متأكد من حذف مجموعة الأسئلة هذه؟",
+    "deleteGroupWarning": "سيتم حذف جميع الأسئلة في هذه المجموعة أيضاً.",
+    "groupForm": {
+      "titleAr": "العنوان بالعربية",
+      "titleArPlaceholder": "أدخل العنوان بالعربية",
+      "titleEn": "العنوان بالإنجليزية",
+      "titleEnPlaceholder": "أدخل العنوان بالإنجليزية"
+    },
+    "tableHeaders": {
+      "name": "اسم المجموعة",
+      "description": "الوصف",
+      "questionsCount": "عدد الأسئلة",
+      "actions": "الإجراءات"
+    },
+    "buttons": {
+      "addGroup": "إضافة مجموعة",
+      "editGroup": "تعديل المجموعة",
+      "deleteGroup": "حذف المجموعة",
+      "viewQuestions": "عرض الأسئلة",
+      "backToGroups": "العودة إلى المجموعات"
+    },
+    "questions": {
+      "title": "الأسئلة",
+      "addQuestion": "إضافة سؤال",
+      "editQuestion": "تعديل السؤال",
+      "deleteQuestion": "حذف السؤال",
+      "searchPlaceholder": "البحث في الأسئلة...",
+      "noQuestionsFound": "لم يتم العثور على أسئلة",
+      "confirmDeleteQuestion": "هل أنت متأكد من حذف هذا السؤال؟",
+      "deleteQuestionWarning": "لا يمكن التراجع عن هذا الإجراء.",
+      "questionForm": {
+        "image": "صورة السؤال",
+        "type": "نوع السؤال",
+        "descriptionAr": "الوصف بالعربية",
+        "descriptionArPlaceholder": "أدخل الوصف بالعربية",
+        "descriptionEn": "الوصف بالإنجليزية",
+        "descriptionEnPlaceholder": "أدخل الوصف بالإنجليزية",
+        "answers": "الإجابات",
+        "addAnswer": "إضافة إجابة",
+        "answer": "الإجابة",
+        "answerAr": "الإجابة بالعربية",
+        "answerArPlaceholder": "أدخل الإجابة بالعربية",
+        "answerEn": "الإجابة بالإنجليزية",
+        "answerEnPlaceholder": "أدخل الإجابة بالإنجليزية"
+      },
+      "tableHeaders": {
+        "description": "الوصف",
+        "type": "النوع",
+        "answers": "الإجابات",
+        "image": "الصورة",
+        "answersCount": "عدد الإجابات",
+        "actions": "الإجراءات"
+      },
+      "questionTypes": {
+        "multiple_choice": "اختيار متعدد",
+        "essay": "مقال"
+      },
+      "buttons": {
+        "addQuestion": "إضافة سؤال",
+        "editQuestion": "تعديل السؤال",
+        "deleteQuestion": "حذف السؤال",
+        "backToGroup": "العودة إلى المجموعة"
+      }
+    }
+  }
+} 
