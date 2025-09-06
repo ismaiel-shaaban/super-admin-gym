@@ -132,13 +132,52 @@ export const createQuestion = createAsyncThunk(
   }
 );
 
+export const updateQuestion = createAsyncThunk(
+  'questionGroups/updateQuestion',
+  async ({ groupId, questionId, questionData }, { rejectWithValue, getState }) => {
+    try {
+      const token = getState().auth.token;
+      const formData = new FormData();
+      
+      // Add image if provided
+      if (questionData.image) {
+        formData.append('image', questionData.image);
+      }
+      
+      // Add basic fields
+      formData.append('type', questionData.type);
+      formData.append('description[ar]', questionData.description_ar);
+      formData.append('description[en]', questionData.description_en);
+      
+      // Add answers array
+      if (questionData.answers && questionData.answers.length > 0) {
+        questionData.answers.forEach((answer, index) => {
+          formData.append(`answers[${index}][description][en]`, answer.description_en);
+          formData.append(`answers[${index}][description][ar]`, answer.description_ar);
+        });
+      }
+      
+      const response = await api.post(`/super-admin/courses/questions/${questionId}?_method=put`, formData, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      return { groupId, questionId, data: response.data?.data || response.data };
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || error.message || 'Network error');
+    }
+  }
+);
+
 export const deleteQuestion = createAsyncThunk(
   'questionGroups/deleteQuestion',
   async ({ groupId, questionId }, { rejectWithValue, getState }) => {
     try {
       const token = getState().auth.token;
       
-      await api.delete(`/super-admin/courses/${groupId}/questions/${questionId}`, {
+      await api.delete(`/super-admin/courses/questions/${questionId}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -167,6 +206,8 @@ const initialState = {
   questionsError: {},
   createQuestionLoading: {},
   createQuestionError: {},
+  updateQuestionLoading: {},
+  updateQuestionError: {},
   deleteQuestionLoading: {},
   deleteQuestionError: {},
 };
@@ -196,6 +237,12 @@ const questionGroupsSlice = createSlice({
         state.createQuestionError[groupId] = null;
       }
     },
+    clearUpdateQuestionError: (state, action) => {
+      const groupId = action.payload;
+      if (state.updateQuestionError[groupId]) {
+        state.updateQuestionError[groupId] = null;
+      }
+    },
     clearDeleteQuestionError: (state, action) => {
       const groupId = action.payload;
       if (state.deleteQuestionError[groupId]) {
@@ -208,6 +255,7 @@ const questionGroupsSlice = createSlice({
       state.deleteGroupError = null;
       state.questionsError = {};
       state.createQuestionError = {};
+      state.updateQuestionError = {};
       state.deleteQuestionError = {};
     },
   },
@@ -291,6 +339,28 @@ const questionGroupsSlice = createSlice({
         state.createQuestionLoading[groupId] = false;
         state.createQuestionError[groupId] = action.payload;
       })
+      .addCase(updateQuestion.pending, (state, action) => {
+        const groupId = action.meta.arg.groupId;
+        state.updateQuestionLoading[groupId] = true;
+        state.updateQuestionError[groupId] = null;
+      })
+      .addCase(updateQuestion.fulfilled, (state, action) => {
+        const { groupId, questionId, data } = action.payload;
+        state.updateQuestionLoading[groupId] = false;
+        if (state.questions[groupId]) {
+          const questionIndex = state.questions[groupId].findIndex(
+            question => question.id === questionId
+          );
+          if (questionIndex !== -1) {
+            state.questions[groupId][questionIndex] = data.data || data;
+          }
+        }
+      })
+      .addCase(updateQuestion.rejected, (state, action) => {
+        const groupId = action.meta.arg.groupId;
+        state.updateQuestionLoading[groupId] = false;
+        state.updateQuestionError[groupId] = action.payload;
+      })
       .addCase(deleteQuestion.pending, (state, action) => {
         const groupId = action.meta.arg.groupId;
         state.deleteQuestionLoading[groupId] = true;
@@ -319,6 +389,7 @@ export const {
   clearDeleteGroupError,
   clearQuestionsError,
   clearCreateQuestionError,
+  clearUpdateQuestionError,
   clearDeleteQuestionError,
   clearAllErrors,
 } = questionGroupsSlice.actions;

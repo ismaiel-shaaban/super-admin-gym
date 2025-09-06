@@ -1,7 +1,9 @@
-import React from 'react';
-import { Row, Col, Card, Badge } from 'react-bootstrap';
+import React, { useEffect, useState } from 'react';
+import { Row, Col, Card, Badge, Alert, Form, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useAppSelector } from '../hooks/useAppSelector';
+import { useAppDispatch } from '../hooks/useAppDispatch';
+import { fetchDashboardStatistics, clearDashboardError } from '../store/slices/dashboardSlice';
 import { 
   FiUsers, 
   FiCheckCircle, 
@@ -13,186 +15,403 @@ import {
   FiBarChart2,
   FiActivity,
   FiTrendingUp,
-  FiTrendingDown
+  FiTrendingDown,
+  FiBook,
+  FiCreditCard,
+  FiFilter
 } from 'react-icons/fi';
 
 const Dashboard = () => {
   const { t, i18n } = useTranslation();
+  const dispatch = useAppDispatch();
   const language = useAppSelector((state) => state.language.language);
+  
+  // Dashboard state
+  const { statistics, loading, error } = useAppSelector((state) => state.dashboard);
 
-  const stats = [
-    {
-      title: t('dashboard.totalUsers'),
-      value: '1,234',
-      change: '+12%',
-      changeType: 'positive',
-      icon: <FiUsers />,
-      color: 'primary',
-    },
-    {
-      title: t('dashboard.activeUsers'),
-      value: '892',
-      change: '+8%',
-      changeType: 'positive',
-      icon: <FiCheckCircle />,
-      color: 'success',
-    },
-    {
-      title: t('dashboard.newUsers'),
-      value: '45',
-      change: '+23%',
-      changeType: 'positive',
-      icon: <FiUserPlus />,
-      color: 'info',
-    },
-    {
-      title: t('dashboard.totalRevenue'),
-      value: '$12,345',
-      change: '+15%',
-      changeType: 'positive',
-      icon: <FiDollarSign />,
-      color: 'warning',
-    },
-  ];
+  // Date filter state
+  const [dateFrom, setDateFrom] = useState('');
+  const [dateTo, setDateTo] = useState('');
 
-  const recentActivities = [
-    {
-      id: 1,
-      action: 'New user registered',
-      user: 'John Doe',
-      time: '2 minutes ago',
-      type: 'user',
-    },
-    {
-      id: 2,
-      action: 'System update completed',
-      user: 'System',
-      time: '1 hour ago',
-      type: 'system',
-    },
-    {
-      id: 3,
-      action: 'Payment received',
-      user: 'Jane Smith',
-      time: '3 hours ago',
-      type: 'payment',
-    },
-    {
-      id: 4,
-      action: 'Report generated',
-      user: 'Admin',
-      time: '5 hours ago',
-      type: 'report',
-    },
-  ];
+  // Fetch statistics on component mount
+  useEffect(() => {
+    dispatch(fetchDashboardStatistics());
+    
+    // Clear errors when component unmounts
+    return () => {
+      dispatch(clearDashboardError());
+    };
+  }, [dispatch]);
 
+  // Handle date filter submission
+  const handleDateFilter = () => {
+    const dateParams = {};
+    if (dateFrom) dateParams.date_from = dateFrom;
+    if (dateTo) dateParams.date_to = dateTo;
+    
+    dispatch(fetchDashboardStatistics(dateParams));
+  };
+
+  // Handle clear filters
+  const handleClearFilters = () => {
+    setDateFrom('');
+    setDateTo('');
+    dispatch(fetchDashboardStatistics());
+  };
+
+  // Format currency
+  const formatCurrency = (amount) => {
+    if (!amount) return '$0.00';
+    const num = parseFloat(amount);
+    return `$${num.toFixed(2)}`;
+  };
+
+  // Format date
+  const formatDate = (dateString) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return date.toLocaleDateString(language === 'ar' ? 'ar-EG' : 'en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
+
+  // Get status badge
+  const getStatusBadge = (status) => {
+    const statusConfig = {
+      pending: { variant: 'warning', text: t('common.pending') },
+      active: { variant: 'success', text: t('common.active') },
+      finished: { variant: 'secondary', text: t('common.finished') },
+      waiting_for_payment: { variant: 'info', text: t('common.waitingForPayment') },
+      expired: { variant: 'danger', text: t('common.expired') }
+    };
+    
+    const config = statusConfig[status] || { variant: 'secondary', text: status };
+    return <Badge bg={config.variant}>{config.text}</Badge>;
+  };
+
+  // Get activity icon
   const getActivityIcon = (type) => {
     switch (type) {
-      case 'user':
-        return <FiUser />;
-      case 'system':
-        return <FiSettings />;
-      case 'payment':
-        return <FiDollarSign />;
-      case 'report':
-        return <FiFileText />;
+      case 'subscription':
+        return <FiCreditCard />;
+      case 'user_registration':
+        return <FiUserPlus />;
       default:
         return <FiActivity />;
     }
   };
+
+  // Loading state
+  if (loading) {
+    return (
+      <div className="d-flex justify-content-center align-items-center" style={{ height: '400px' }}>
+        <div className="spinner-border text-primary" role="status">
+          <span className="visually-hidden">{t('common.loading')}</span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="dashboard-page">
       <div className="dashboard-header">
         <h1 className="dashboard-title">{t('dashboard.title')}</h1>
         <p className="dashboard-subtitle">{t('dashboard.overview')}</p>
-        
-      
       </div>
 
+      {/* Date Filter Section */}
+      <Card className="mb-4">
+        <Card.Header>
+          <h5 className="card-title mb-0">
+            <FiFilter className="me-2" />
+            {t('dashboard.dateFilter')}
+          </h5>
+        </Card.Header>
+        <Card.Body>
+          <Row>
+            <Col md={3}>
+              <Form.Group>
+                <Form.Label>{t('dashboard.dateFrom')}</Form.Label>
+                <Form.Control
+                  type="date"
+                  value={dateFrom}
+                  onChange={(e) => setDateFrom(e.target.value)}
+                />
+              </Form.Group>
+            </Col>
+            <Col md={3}>
+              <Form.Group>
+                <Form.Label>{t('dashboard.dateTo')}</Form.Label>
+                <Form.Control
+                  type="date"
+                  value={dateTo}
+                  onChange={(e) => setDateTo(e.target.value)}
+                />
+              </Form.Group>
+            </Col>
+            <Col md={6} className="d-flex align-items-end">
+              <div className="d-flex gap-2">
+                <Button 
+                  variant="primary" 
+                  onClick={handleDateFilter}
+                  disabled={loading}
+                >
+                  <FiFilter className="me-1" />
+                  {t('dashboard.applyFilter')}
+                </Button>
+                <Button 
+                  variant="outline-secondary" 
+                  onClick={handleClearFilters}
+                  disabled={loading}
+                >
+                  {t('dashboard.clearFilter')}
+                </Button>
+              </div>
+            </Col>
+          </Row>
+        </Card.Body>
+      </Card>
+
+      {/* Error Alert */}
+      {error && (
+        <Alert variant="danger" dismissible onClose={() => dispatch(clearDashboardError())}>
+          {error}
+        </Alert>
+      )}
+
       {/* Statistics Cards */}
-      <Row className="mb-4">
-        {stats.map((stat, index) => (
-          <Col key={index} xs={12} sm={6} lg={3} className="mb-3">
+      {statistics && (
+        <Row className="mb-4">
+          {/* Users Statistics */}
+          <Col xs={12} sm={6} lg={3} className="mb-3">
             <Card className="stat-card">
               <Card.Body>
                 <div className="stat-content">
                   <div className="stat-icon">
-                    <span className="stat-emoji">{stat.icon}</span>
+                    <span className="stat-emoji"><FiUsers /></span>
                   </div>
                   <div className="stat-details">
-                    <h3 className="stat-value">{stat.value}</h3>
-                    <p className="stat-title">{stat.title}</p>
-                    <Badge 
-                      bg={stat.changeType === 'positive' ? 'success' : 'danger'}
-                      className="stat-change"
-                    >
-                      {stat.change}
+                    <h3 className="stat-value">{statistics.users?.total_coaches || 0}</h3>
+                    <p className="stat-title">{t('dashboard.totalCoaches')}</p>
+                    <Badge bg="primary" className="stat-change">
+                      {statistics.users?.active_coaches || 0} {t('dashboard.active')}
                     </Badge>
                   </div>
                 </div>
               </Card.Body>
             </Card>
           </Col>
-        ))}
-      </Row>
 
-      {/* Recent Activity */}
-      <Row>
-        <Col lg={8} className="mb-4">
-          <Card className="activity-card">
-            <Card.Header>
-              <h5 className="card-title">{t('dashboard.recentActivity')}</h5>
-            </Card.Header>
-            <Card.Body>
-              <div className="activity-list">
-                {recentActivities.map((activity) => (
-                  <div key={activity.id} className="activity-item">
-                    <div className="activity-icon">
-                      {getActivityIcon(activity.type)}
-                    </div>
-                    <div className="activity-content">
-                      <div className="activity-text">
-                        <strong>{activity.action}</strong>
-                        <span className="activity-user"> by {activity.user}</span>
-                      </div>
-                      <div className="activity-time">{activity.time}</div>
-                    </div>
+          <Col xs={12} sm={6} lg={3} className="mb-3">
+            <Card className="stat-card">
+              <Card.Body>
+                <div className="stat-content">
+                  <div className="stat-icon">
+                    <span className="stat-emoji"><FiUser /></span>
                   </div>
-                ))}
-              </div>
-            </Card.Body>
-          </Card>
-        </Col>
+                  <div className="stat-details">
+                    <h3 className="stat-value">{statistics.users?.total_trainees || 0}</h3>
+                    <p className="stat-title">{t('dashboard.totalTrainees')}</p>
+                    <Badge bg="success" className="stat-change">
+                      {statistics.users?.active_trainees || 0} {t('dashboard.active')}
+                    </Badge>
+                  </div>
+                </div>
+              </Card.Body>
+            </Card>
+          </Col>
 
-        <Col lg={4} className="mb-4">
-          <Card className="quick-actions-card">
-            <Card.Header>
-              <h5 className="card-title">{t('dashboard.quickActions')}</h5>
-            </Card.Header>
-            <Card.Body>
-              <div className="quick-actions-list">
-                <button className="quick-action-btn">
-                  <span className="action-icon"><FiUserPlus /></span>
-                  <span className="action-text">{t('users.addUser')}</span>
-                </button>
-                <button className="quick-action-btn">
-                  <span className="action-icon"><FiFileText /></span>
-                  <span className="action-text">{t('navigation.reports')}</span>
-                </button>
-                <button className="quick-action-btn">
-                  <span className="action-icon"><FiSettings /></span>
-                  <span className="action-text">{t('common.settings')}</span>
-                </button>
-                <button className="quick-action-btn">
-                  <span className="action-icon"><FiBarChart2 /></span>
-                  <span className="action-text">{t('navigation.analytics')}</span>
-                </button>
-              </div>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
+          {/* Revenue Statistics */}
+          <Col xs={12} sm={6} lg={3} className="mb-3">
+            <Card className="stat-card">
+              <Card.Body>
+                <div className="stat-content">
+                  <div className="stat-icon">
+                    <span className="stat-emoji"><FiDollarSign /></span>
+                  </div>
+                  <div className="stat-details">
+                    <h3 className="stat-value">{formatCurrency(statistics.revenue?.total_revenue)}</h3>
+                    <p className="stat-title">{t('dashboard.totalRevenue')}</p>
+                    <Badge bg="warning" className="stat-change">
+                      {formatCurrency(statistics.revenue?.monthly_revenue)} {t('dashboard.monthly')}
+                    </Badge>
+                  </div>
+                </div>
+              </Card.Body>
+            </Card>
+          </Col>
+
+          <Col xs={12} sm={6} lg={3} className="mb-3">
+            <Card className="stat-card">
+              <Card.Body>
+                <div className="stat-content">
+                  <div className="stat-icon">
+                    <span className="stat-emoji"><FiTrendingUp /></span>
+                  </div>
+                  <div className="stat-details">
+                    <h3 className="stat-value">{formatCurrency(statistics.revenue?.active_revenue)}</h3>
+                    <p className="stat-title">{t('dashboard.activeRevenue')}</p>
+                    <Badge bg="success" className="stat-change">
+                      {formatCurrency(statistics.revenue?.average_subscription_value)} {t('dashboard.averageValue')}
+                    </Badge>
+                  </div>
+                </div>
+              </Card.Body>
+            </Card>
+          </Col>
+
+          {/* Subscription Statistics */}
+          <Col xs={12} sm={6} lg={3} className="mb-3">
+            <Card className="stat-card">
+              <Card.Body>
+                <div className="stat-content">
+                  <div className="stat-icon">
+                    <span className="stat-emoji"><FiBook /></span>
+                  </div>
+                  <div className="stat-details">
+                    <h3 className="stat-value">{statistics.subscriptions?.total_subscriptions || 0}</h3>
+                    <p className="stat-title">{t('dashboard.totalSubscriptions')}</p>
+                    <Badge bg="info" className="stat-change">
+                      {statistics.subscriptions?.active_subscriptions || 0} {t('dashboard.active')}
+                    </Badge>
+                  </div>
+                </div>
+              </Card.Body>
+            </Card>
+          </Col>
+
+          <Col xs={12} sm={6} lg={3} className="mb-3">
+            <Card className="stat-card">
+              <Card.Body>
+                <div className="stat-content">
+                  <div className="stat-icon">
+                    <span className="stat-emoji"><FiBarChart2 /></span>
+                  </div>
+                  <div className="stat-details">
+                    <h3 className="stat-value">{statistics.subscriptions?.monthly_subscriptions || 0}</h3>
+                    <p className="stat-title">{t('dashboard.monthlySubscriptions')}</p>
+                    <Badge bg="warning" className="stat-change">
+                      {statistics.subscriptions?.expired_subscriptions || 0} {t('dashboard.expired')}
+                    </Badge>
+                  </div>
+                </div>
+              </Card.Body>
+            </Card>
+          </Col>
+
+          {/* Recent Activities Count */}
+          <Col xs={12} sm={6} lg={3} className="mb-3">
+            <Card className="stat-card">
+              <Card.Body>
+                <div className="stat-content">
+                  <div className="stat-icon">
+                    <span className="stat-emoji"><FiActivity /></span>
+                  </div>
+                  <div className="stat-details">
+                    <h3 className="stat-value">{statistics.recent_activities?.recent_subscriptions?.length || 0}</h3>
+                    <p className="stat-title">{t('dashboard.recentSubscriptions')}</p>
+                    <Badge bg="primary" className="stat-change">
+                      {statistics.recent_activities?.recent_users?.length || 0} {t('dashboard.recentUsers')}
+                    </Badge>
+                  </div>
+                </div>
+              </Card.Body>
+            </Card>
+          </Col>
+
+          {/* Total Users */}
+          <Col xs={12} sm={6} lg={3} className="mb-3">
+            <Card className="stat-card">
+              <Card.Body>
+                <div className="stat-content">
+                  <div className="stat-icon">
+                    <span className="stat-emoji"><FiUserPlus /></span>
+                  </div>
+                  <div className="stat-details">
+                    <h3 className="stat-value">{(statistics.users?.total_coaches || 0) + (statistics.users?.total_trainees || 0)}</h3>
+                    <p className="stat-title">{t('dashboard.totalUsers')}</p>
+                    <Badge bg="secondary" className="stat-change">
+                      {(statistics.users?.active_coaches || 0) + (statistics.users?.active_trainees || 0)} {t('dashboard.active')}
+                    </Badge>
+                  </div>
+                </div>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      )}
+
+      {/* Recent Activities */}
+      {statistics && (
+        <Row>
+          <Col lg={6} className="mb-4">
+            <Card className="activity-card">
+              <Card.Header>
+                <h5 className="card-title">{t('dashboard.recentSubscriptions')}</h5>
+              </Card.Header>
+              <Card.Body>
+                <div className="activity-list">
+                  {statistics.recent_activities?.recent_subscriptions?.map((activity) => (
+                    <div key={activity.id} className="activity-item">
+                      <div className="activity-icon">
+                        {getActivityIcon(activity.type)}
+                      </div>
+                      <div className="activity-content">
+                        <div className="activity-text">
+                          <strong>{t('dashboard.newSubscription')}</strong>
+                          <span className="activity-user"> {activity.user_name} - {activity.course_title}</span>
+                        </div>
+                        <div className="activity-details">
+                          <span className="activity-amount">{formatCurrency(activity.amount)}</span>
+                          <span className="activity-status">{getStatusBadge(activity.status)}</span>
+                          <span className="activity-time">{formatDate(activity.created_at)}</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </Card.Body>
+            </Card>
+          </Col>
+
+          <Col lg={6} className="mb-4">
+            <Card className="activity-card">
+              <Card.Header>
+                <h5 className="card-title">{t('dashboard.recentUsers')}</h5>
+              </Card.Header>
+              <Card.Body>
+                <div className="activity-list">
+                  {statistics.recent_activities?.recent_users?.map((user) => (
+                    <div key={user.id} className="activity-item">
+                      <div className="activity-icon">
+                        {getActivityIcon(user.type)}
+                      </div>
+                      <div className="activity-content">
+                        <div className="activity-text">
+                          <strong>{t('dashboard.newUser')}</strong>
+                          <span className="activity-user"> {user.user_name} ({user.email})</span>
+                        </div>
+                        <div className="activity-details">
+                          <span className="activity-role">
+                            <Badge bg={user.role === 'coach' ? 'primary' : 'success'}>
+                              {t(`users.${user.role}`)}
+                            </Badge>
+                          </span>
+                          <span className="activity-time">{formatDate(user.created_at)}</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      )}
 
       <style jsx>{`
         .dashboard-page {
@@ -342,43 +561,29 @@ const Dashboard = () => {
           color: var(--bs-secondary);
         }
 
-        .activity-time {
-          font-size: 0.8rem;
-          color: var(--bs-secondary);
-        }
-
-        .quick-actions-list {
-          display: flex;
-          flex-direction: column;
-          gap: 0.75rem;
-        }
-
-        .quick-action-btn {
+        .activity-details {
           display: flex;
           align-items: center;
-          gap: 0.75rem;
-          padding: 0.75rem;
-          border: none;
-          background: var(--bs-light);
-          border-radius: 8px;
-          transition: all 0.2s ease;
-          text-align: left;
-          width: 100%;
+          gap: 0.5rem;
+          font-size: 0.8rem;
         }
 
-        .quick-action-btn:hover {
-          background: var(--bs-primary);
-          color: white;
-          transform: translateX(5px);
+        .activity-amount {
+          font-weight: 600;
+          color: var(--bs-success);
         }
 
-        .action-icon {
-          font-size: 1.2rem;
+        .activity-status {
+          margin: 0 0.5rem;
         }
 
-        .action-text {
-          font-weight: 500;
-        }
+                 .activity-time {
+           color: var(--bs-secondary);
+         }
+
+         .activity-role {
+           margin: 0 0.5rem;
+         }
 
         /* Dark theme support */
         [data-theme="dark"] .dashboard-title {
@@ -409,30 +614,15 @@ const Dashboard = () => {
           background-color: var(--main-dark-lighter);
         }
 
-        [data-theme="dark"] .quick-action-btn {
-          background: var(--main-dark);
-          color: #ffffff;
-        }
+                 [data-theme="dark"] .stat-card {
+           background-color: var(--main-dark);
+           border-color: var(--bs-border-color);
+         }
 
-        [data-theme="dark"] .quick-action-btn:hover {
-          background: var(--bs-primary);
-        }
-
-        [data-theme="dark"] .stat-card {
-          background-color: var(--main-dark);
-          border-color: var(--bs-border-color);
-        }
-
-        [data-theme="dark"] .activity-card,
-        [data-theme="dark"] .quick-actions-card {
-          background-color: var(--main-dark);
-          border-color: var(--bs-border-color);
-        }
-
-        /* RTL support */
-        [dir="rtl"] .quick-action-btn:hover {
-          transform: translateX(-5px);
-        }
+         [data-theme="dark"] .activity-card {
+           background-color: var(--main-dark);
+           border-color: var(--bs-border-color);
+         }
       `}</style>
     </div>
   );

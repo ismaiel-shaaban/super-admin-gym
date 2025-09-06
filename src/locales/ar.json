@@ -38,7 +38,12 @@
     "dark": "داكن",
     "light": "فاتح",
     "english": "الإنجليزية",
-    "arabic": "العربية"
+    "arabic": "العربية",
+    "pending": "في الانتظار",
+    "active": "نشط",
+    "finished": "منتهي",
+    "waitingForPayment": "في انتظار الدفع",
+    "expired": "منتهي الصلاحية"
   },
   "auth": {
     "loginTitle": "تسجيل دخول المدير",
@@ -55,13 +60,28 @@
   "dashboard": {
     "title": "لوحة التحكم",
     "overview": "نظرة عامة",
+    "totalCoaches": "إجمالي المدربين",
+    "totalTrainees": "إجمالي المتدربين",
     "totalUsers": "إجمالي المستخدمين",
-    "activeUsers": "المستخدمين النشطين",
-    "newUsers": "المستخدمين الجدد",
     "totalRevenue": "إجمالي الإيرادات",
+    "activeRevenue": "الإيرادات النشطة",
+    "averageValue": "متوسط القيمة",
+    "totalSubscriptions": "إجمالي الاشتراكات",
+    "monthlySubscriptions": "الاشتراكات الشهرية",
+    "recentSubscriptions": "الاشتراكات الحديثة",
+    "recentUsers": "المستخدمين الجدد",
+    "active": "نشط",
+    "monthly": "شهري",
     "recentActivity": "النشاط الأخير",
-    "quickActions": "الإجراءات السريعة",
-    "viewAll": "عرض الكل"
+    "newSubscription": "اشتراك جديد",
+    "newUser": "مستخدم جديد",
+    "viewAll": "عرض الكل",
+    "dateFilter": "تصفية التاريخ",
+    "dateFrom": "التاريخ من",
+    "dateTo": "التاريخ إلى",
+    "applyFilter": "تطبيق التصفية",
+    "clearFilter": "مسح التصفية",
+    "expired": "منتهي الصلاحية"
   },
   "users": {
     "title": "إدارة المستخدمين",
@@ -196,6 +216,102 @@
     },
     "deleted": "محذوف"
   },
+  "coachesLedger": {
+    "title": "دفتر المدربين",
+    "titleIndividual": "تفاصيل المدرب",
+    "searchPlaceholder": "البحث في المدربين...",
+    "noDataFound": "لم يتم العثور على بيانات",
+    "dateFrom": "التاريخ من",
+    "dateTo": "التاريخ إلى",
+    "created": "تاريخ الإنشاء",
+    "ends": "تاريخ الانتهاء",
+    "coachInfo": "معلومات المدرب",
+    "coachDetails": {
+      "name": "الاسم",
+      "email": "البريد الإلكتروني",
+      "phone": "الهاتف",
+      "totalRevenue": "إجمالي الإيرادات"
+    },
+    "tableHeaders": {
+      "coach": "المدرب",
+      "subscriptions": "الاشتراكات",
+      "revenue": "الإيرادات",
+      "courses": "الدورات",
+      "trainees": "المتدربين",
+      "actions": "الإجراءات"
+    },
+    "buttons": {
+      "view": "عرض",
+      "backToList": "العودة إلى القائمة",
+      "filter": "تصفية"
+    },
+    "tabs": {
+      "overview": "نظرة عامة",
+      "subscriptions": "الاشتراكات",
+      "courses": "الدورات",
+      "trainees": "المتدربين"
+    },
+    "overview": {
+      "totalRevenue": "إجمالي الإيرادات",
+      "activeRevenue": "الإيرادات النشطة",
+      "totalSubscriptions": "إجمالي الاشتراكات",
+      "totalTrainees": "إجمالي المتدربين",
+      "coursesSummary": "ملخص الدورات",
+      "totalCourses": "إجمالي الدورات",
+      "openCourses": "الدورات المفتوحة",
+      "totalCourseRevenue": "إجمالي إيرادات الدورات",
+      "recentSubscriptions": "الاشتراكات الحديثة"
+    },
+    "subscriptions": {
+      "tableHeaders": {
+        "id": "الرقم",
+        "course": "الدورة",
+        "trainee": "المتدرب",
+        "status": "الحالة",
+        "price": "السعر",
+        "createdAt": "تاريخ الإنشاء",
+        "dates": "التواريخ",
+        "endedAt": "تاريخ الانتهاء"
+      }
+    },
+    "courses": {
+      "tableHeaders": {
+        "id": "الرقم",
+        "title": "العنوان",
+        "type": "النوع",
+        "status": "الحالة",
+        "price": "السعر",
+        "subscribers": "المشتركين",
+        "revenue": "الإيرادات"
+      },
+      "total": "الإجمالي",
+      "active": "النشط"
+    },
+    "trainees": {
+      "tableHeaders": {
+        "id": "الرقم",
+        "name": "الاسم",
+        "subscriptions": "الاشتراكات",
+        "revenue": "الإيرادات"
+      },
+      "total": "الإجمالي",
+      "active": "النشط"
+    },
+    "status": {
+      "pending": "في الانتظار",
+      "waiting_for_payment": "في انتظار الدفع",
+      "finished": "منتهي",
+      "active": "نشط",
+      "under_request": "تحت الطلب",
+      "open": "مفتوح"
+    },
+    "active": "نشط",
+    "open": "مفتوح",
+    "coursesDetails": "تفاصيل الدورات",
+    "traineesInformation": "معلومات المتدربين",
+    "subscriptionDetails": "تفاصيل الاشتراكات"
+   
+  },
   "navigation": {
     "dashboard": "لوحة التحكم",
     "users": "المستخدمين",
@@ -323,38 +439,7 @@
       "slug": "الرابط"
     }
   },
-  "coachesLedger": {
-    "title": "دفتر المدربين",
-    "titleIndividual": "تفاصيل دفتر المدرب",
-    "searchPlaceholder": "البحث في دفتر المدربين...",
-    "noDataFound": "لم يتم العثور على بيانات الدفتر",
-    "dateFrom": "التاريخ من",
-    "dateTo": "التاريخ إلى",
-    "coachInfo": "معلومات المدرب",
-    "coachDetails": {
-      "name": "الاسم",
-      "email": "البريد الإلكتروني",
-      "phone": "الهاتف",
-      "totalBalance": "الرصيد الإجمالي"
-    },
-    "tableHeaders": {
-      "coach": "المدرب",
-      "transactionType": "نوع المعاملة",
-      "amount": "المبلغ",
-      "description": "الوصف",
-      "date": "التاريخ",
-      "actions": "الإجراءات"
-    },
-    "transactionTypes": {
-      "credit": "إيداع",
-      "debit": "سحب"
-    },
-    "buttons": {
-      "view": "عرض",
-      "backToList": "العودة إلى القائمة",
-      "filter": "تصفية"
-    }
-  },
+
   "traineesLedger": {
     "title": "دفتر المتدربين",
     "titleIndividual": "تفاصيل دفتر المتدرب",
@@ -390,8 +475,10 @@
       "cancelled": "ملغي",
       "expired": "منتهي الصلاحية"
     },
-    "subscriptionDetails": "تفاصيل الاشتراكات",
+        "subscriptionDetails": "تفاصيل الاشتراكات",
     "subscriptionSummary": "ملخص الاشتراكات",
+    "coursesDetails": "تفاصيل الدورات",
+    "traineesInformation": "معلومات المتدربين",
     "total": "الإجمالي",
     "active": "النشط",
     "coaches": "المدربين",
@@ -401,8 +488,8 @@
     "activeSubscriptions": "الاشتراكات النشطة",
     "totalSpending": "إجمالي الإنفاق",
     "totalCoaches": "إجمالي المدربين",
-         "coachesInformation": "معلومات المدربين",
-     "transactionSummary": "ملخص المعاملات",
+    "coachesInformation": "معلومات المدربين",
+    "transactionSummary": "ملخص المعاملات",
      "transactionHeaders": {
        "subscription": "الاشتراك",
        "amount": "المبلغ",

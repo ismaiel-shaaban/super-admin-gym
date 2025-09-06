@@ -10,6 +10,7 @@ import topicsReducer from './slices/topicsSlice';
 import coachesLedgerReducer from './slices/coachesLedgerSlice';
 import traineesLedgerReducer from './slices/traineesLedgerSlice';
 import questionGroupsReducer from './slices/questionGroupsSlice';
+import dashboardReducer from './slices/dashboardSlice';
 
 export const store = configureStore({
   reducer: {
@@ -24,6 +25,7 @@ export const store = configureStore({
     coachesLedger: coachesLedgerReducer,
     traineesLedger: traineesLedgerReducer,
     questionGroups: questionGroupsReducer,
+    dashboard: dashboardReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

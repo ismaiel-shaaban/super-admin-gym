@@ -19,7 +19,10 @@ import {
   FiDollarSign,
   FiUser,
   FiTrendingUp,
-  FiTrendingDown
+  FiTrendingDown,
+  FiBook,
+  FiUsers,
+  FiCreditCard
 } from 'react-icons/fi';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -102,86 +105,39 @@ const CoachesLedger = () => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD'
-    }).format(amount);
+    }).format(parseFloat(amount));
   };
 
-  // Filter ledger based on search term
-  const filteredLedger = coachId ? coachLedger : ledger.filter(item => {
+  const getStatusBadge = (status) => {
+    const statusColors = {
+      'pending': 'warning',
+      'waiting_for_payment': 'info',
+      'finished': 'success',
+      'active': 'success',
+      'under_request': 'secondary',
+      'open': 'primary'
+    };
+    
+    return (
+      <Badge bg={statusColors[status] || 'secondary'}>
+        {t(`coachesLedger.status.${status}`)}
+      </Badge>
+    );
+  };
+
+  // Filter data based on search term
+  const filteredData = coachId ? coachLedger : ledger.filter(item => {
     const searchLower = searchTerm.toLowerCase();
     return (
-      item.coach?.name?.toLowerCase().includes(searchLower) ||
+      item.coach?.user_name?.toLowerCase().includes(searchLower) ||
       item.coach?.email?.toLowerCase().includes(searchLower) ||
       item.coach?.phone?.toLowerCase().includes(searchLower) ||
-      item.spending?.total?.toLowerCase().includes(searchLower)
+      item.revenue?.total?.toLowerCase().includes(searchLower)
     );
   });
 
-  const renderLedgerTable = () => (
-    <Table responsive striped hover>
-      <thead>
-        <tr>
-          <th>{t('coachesLedger.tableHeaders.coach')}</th>
-          <th>{t('coachesLedger.tableHeaders.transactionType')}</th>
-          <th>{t('coachesLedger.tableHeaders.amount')}</th>
-          <th>{t('coachesLedger.tableHeaders.description')}</th>
-          <th>{t('coachesLedger.tableHeaders.date')}</th>
-          <th>{t('coachesLedger.tableHeaders.actions')}</th>
-        </tr>
-      </thead>
-      <tbody>
-        {filteredLedger.map((item, index) => (
-          <tr key={index}>
-            <td>
-              <div>
-                <div className="fw-bold">
-                  {item.coach?.name || item.coach_name || '-'}
-                </div>
-                <small className="text-muted">
-                  {item.coach?.email || item.coach_email || '-'}
-                </small>
-              </div>
-            </td>
-            <td>
-              <Badge 
-                bg={item.transaction_type === 'credit' ? 'success' : 'danger'}
-                className="transaction-badge"
-              >
-                {item.transaction_type === 'credit' ? (
-                  <FiTrendingUp className="me-1" />
-                ) : (
-                  <FiTrendingDown className="me-1" />
-                )}
-                {t(`coachesLedger.transactionTypes.${item.transaction_type}`)}
-              </Badge>
-            </td>
-            <td>
-              <span className={`fw-bold ${item.transaction_type === 'credit' ? 'text-success' : 'text-danger'}`}>
-                {formatCurrency(item.amount)}
-              </span>
-            </td>
-            <td>{item.description || '-'}</td>
-            <td>{formatDate(item.created_at || item.date)}</td>
-            <td>
-              {!coachId && (
-                <Button
-                  variant="outline-primary"
-                  size="sm"
-                  onClick={() => handleViewCoach(item.coach || { id: item.coach_id, name: item.coach_name })}
-                  className="d-flex align-items-center gap-1"
-                >
-                  <FiEye />
-                  {t('coachesLedger.buttons.view')}
-                </Button>
-              )}
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </Table>
-  );
-
   const renderCoachInfo = () => {
-    if (!coachInfo) return null;
+    if (!coachId || !coachLedger?.coach) return null;
 
     return (
       <Card className="mb-4">
@@ -196,22 +152,22 @@ const CoachesLedger = () => {
             <Col md={6}>
               <div className="mb-3">
                 <strong>{t('coachesLedger.coachDetails.name')}:</strong>
-                <span className="ms-2">{coachInfo.name || '-'}</span>
+                <span className="ms-2">{coachLedger.coach.user_name || '-'}</span>
               </div>
               <div className="mb-3">
                 <strong>{t('coachesLedger.coachDetails.email')}:</strong>
-                <span className="ms-2">{coachInfo.email || '-'}</span>
+                <span className="ms-2">{coachLedger.coach.email || '-'}</span>
               </div>
             </Col>
             <Col md={6}>
               <div className="mb-3">
                 <strong>{t('coachesLedger.coachDetails.phone')}:</strong>
-                <span className="ms-2">{coachInfo.phone || '-'}</span>
+                <span className="ms-2">{coachLedger.coach.phone || '-'}</span>
               </div>
               <div className="mb-3">
-                <strong>{t('coachesLedger.coachDetails.totalBalance')}:</strong>
-                <span className={`ms-2 fw-bold ${(coachInfo.balance || 0) >= 0 ? 'text-success' : 'text-danger'}`}>
-                  {formatCurrency(coachInfo.balance || 0)}
+                <strong>{t('coachesLedger.coachDetails.totalRevenue')}:</strong>
+                <span className="ms-2 fw-bold text-success">
+                  {formatCurrency(coachLedger.revenue?.total || 0)}
                 </span>
               </div>
             </Col>
@@ -220,6 +176,300 @@ const CoachesLedger = () => {
       </Card>
     );
   };
+
+  const renderRevenueSummary = () => {
+    if (!coachId || !coachLedger) return null;
+
+    return (
+      <Card className="mb-4">
+        <Card.Header>
+          <h5 className="mb-0">
+            <FiDollarSign className="me-2" />
+            {t('coachesLedger.overview.coursesSummary')}
+          </h5>
+        </Card.Header>
+        <Card.Body>
+          <Row>
+            <Col md={3}>
+              <div className="text-center">
+                <div className="h4 text-success mb-1">
+                  {formatCurrency(coachLedger.revenue?.total || 0)}
+                </div>
+                <small className="text-muted">{t('coachesLedger.overview.totalRevenue')}</small>
+              </div>
+            </Col>
+            <Col md={3}>
+              <div className="text-center">
+                <div className="h4 text-primary mb-1">
+                  {formatCurrency(coachLedger.revenue?.active || 0)}
+                </div>
+                <small className="text-muted">{t('coachesLedger.overview.activeRevenue')}</small>
+              </div>
+            </Col>
+            <Col md={3}>
+              <div className="text-center">
+                <div className="h4 text-info mb-1">
+                  {coachLedger.subscriptions?.total || 0}
+                </div>
+                <small className="text-muted">{t('coachesLedger.overview.totalSubscriptions')}</small>
+              </div>
+            </Col>
+            <Col md={3}>
+              <div className="text-center">
+                <div className="h4 text-warning mb-1">
+                  {coachLedger.trainees?.length || 0}
+                </div>
+                <small className="text-muted">{t('coachesLedger.overview.totalTrainees')}</small>
+              </div>
+            </Col>
+          </Row>
+        </Card.Body>
+      </Card>
+    );
+  };
+
+  const renderSubscriptionsDetails = () => {
+    if (!coachId || !coachLedger?.subscriptions?.details?.length) return null;
+
+    return (
+      <Card className="mb-4">
+        <Card.Header>
+          <h5 className="mb-0">
+            <FiCreditCard className="me-2" />
+            {t('coachesLedger.subscriptionDetails')}
+          </h5>
+        </Card.Header>
+        <Card.Body>
+          <Table responsive striped hover>
+            <thead>
+              <tr>
+                <th>{t('coachesLedger.subscriptions.tableHeaders.course')}</th>
+                <th>{t('coachesLedger.subscriptions.tableHeaders.trainee')}</th>
+                <th>{t('coachesLedger.subscriptions.tableHeaders.status')}</th>
+                <th>{t('coachesLedger.subscriptions.tableHeaders.price')}</th>
+                <th>{t('coachesLedger.subscriptions.tableHeaders.dates')}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {coachLedger.subscriptions.details.map((subscription, index) => (
+                <tr key={index}>
+                  <td>
+                    <div>
+                      <div className="fw-bold">{subscription.course_title}</div>
+                      <small className="text-muted">ID: {subscription.course_id}</small>
+                    </div>
+                  </td>
+                  <td>
+                    <span className="badge bg-secondary">
+                      {subscription.trainee_name || `Trainee ${subscription.trainee_id}`}
+                    </span>
+                  </td>
+                  <td>{getStatusBadge(subscription.status)}</td>
+                  <td>
+                    <div>
+                      <div className="fw-bold text-primary">
+                        {formatCurrency(subscription.price)}
+                      </div>
+                      {subscription.transaction && (
+                        <small className="text-muted">
+                          Transaction: {subscription.transaction.status} - {formatCurrency(subscription.transaction.amount)}
+                        </small>
+                      )}
+                    </div>
+                  </td>
+                  <td>
+                    <div>
+                      <small className="text-muted">
+                        {t('coachesLedger.created')}: {formatDate(subscription.created_at)}
+                      </small>
+                      <br />
+                      <small className="text-muted">
+                        {t('coachesLedger.ends')}: {formatDate(subscription.ended_at)}
+                      </small>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </Card.Body>
+      </Card>
+    );
+  };
+
+  const renderCoursesDetails = () => {
+    if (!coachId || !coachLedger?.courses?.length) return null;
+
+    return (
+      <Card className="mb-4">
+        <Card.Header>
+          <h5 className="mb-0">
+            <FiBook className="me-2" />
+            {t('coachesLedger.coursesDetails')}
+          </h5>
+        </Card.Header>
+        <Card.Body>
+          <Table responsive striped hover>
+            <thead>
+              <tr>
+                <th>{t('coachesLedger.courses.tableHeaders.title')}</th>
+                <th>{t('coachesLedger.courses.tableHeaders.type')}</th>
+                <th>{t('coachesLedger.courses.tableHeaders.status')}</th>
+                <th>{t('coachesLedger.courses.tableHeaders.price')}</th>
+                <th>{t('coachesLedger.courses.tableHeaders.subscribers')}</th>
+                <th>{t('coachesLedger.courses.tableHeaders.revenue')}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {coachLedger.courses.map((course) => (
+                <tr key={course.id}>
+                  <td>
+                    <div>
+                      <div className="fw-bold">{course.title}</div>
+                      <small className="text-muted">ID: {course.id}</small>
+                    </div>
+                  </td>
+                  <td>
+                    <Badge bg="info">{course.type}</Badge>
+                  </td>
+                  <td>{getStatusBadge(course.status)}</td>
+                  <td className="fw-bold">{formatCurrency(course.price)}</td>
+                  <td>
+                    <div>
+                      <div>{course.total_subscribers} {t('coachesLedger.courses.total')}</div>
+                      <small className="text-success">{course.active_subscribers} {t('coachesLedger.courses.active')}</small>
+                    </div>
+                  </td>
+                  <td className="fw-bold text-success">{formatCurrency(course.total_revenue)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </Card.Body>
+      </Card>
+    );
+  };
+
+  const renderTraineesDetails = () => {
+    if (!coachId || !coachLedger?.trainees?.length) return null;
+
+    return (
+      <Card className="mb-4">
+        <Card.Header>
+          <h5 className="mb-0">
+            <FiUsers className="me-2" />
+            {t('coachesLedger.traineesInformation')}
+          </h5>
+        </Card.Header>
+        <Card.Body>
+          <Table responsive striped hover>
+            <thead>
+              <tr>
+                <th>{t('coachesLedger.trainees.tableHeaders.name')}</th>
+                <th>{t('coachesLedger.trainees.tableHeaders.subscriptions')}</th>
+                <th>{t('coachesLedger.trainees.tableHeaders.revenue')}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {coachLedger.trainees.map((trainee) => (
+                <tr key={trainee.id}>
+                  <td>
+                    <div>
+                      <div className="fw-bold">
+                        {trainee.name || `Trainee ${trainee.id}`}
+                      </div>
+                      <small className="text-muted">ID: {trainee.id}</small>
+                    </div>
+                  </td>
+                  <td>
+                    <div>
+                      <div className="fw-bold">
+                        {trainee.subscriptions?.total || 0} {t('coachesLedger.trainees.total')}
+                      </div>
+                      <small className="text-success">
+                        {trainee.subscriptions?.active || 0} {t('coachesLedger.trainees.active')}
+                      </small>
+                    </div>
+                  </td>
+                  <td>
+                    <div>
+                      <div className="fw-bold text-primary">
+                        {formatCurrency(trainee.revenue?.total || 0)}
+                      </div>
+                      <small className="text-success">
+                        {formatCurrency(trainee.revenue?.active || 0)} {t('coachesLedger.trainees.active')}
+                      </small>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </Card.Body>
+      </Card>
+    );
+  };
+
+  const renderCoachList = () => (
+    <Table responsive striped hover>
+      <thead>
+        <tr>
+          <th>{t('coachesLedger.tableHeaders.coach')}</th>
+          <th>{t('coachesLedger.tableHeaders.subscriptions')}</th>
+          <th>{t('coachesLedger.tableHeaders.revenue')}</th>
+          <th>{t('coachesLedger.tableHeaders.courses')}</th>
+          <th>{t('coachesLedger.tableHeaders.trainees')}</th>
+          <th>{t('coachesLedger.tableHeaders.actions')}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {filteredData.map((item, index) => (
+          <tr key={index}>
+            <td>
+              <div>
+                <div className="fw-bold">
+                  {item.coach?.user_name || '-'}
+                </div>
+                <small className="text-muted">
+                  {item.coach?.email || '-'}
+                </small>
+                <br />
+                <small className="text-muted">
+                  {item.coach?.phone || '-'}
+                </small>
+              </div>
+            </td>
+            <td>
+              <div className="fw-bold">{item.subscriptions?.total || 0}</div>
+              <small className="text-muted">{item.subscriptions?.active || 0} {t('coachesLedger.active')}</small>
+            </td>
+            <td>
+              <div className="fw-bold text-success">{formatCurrency(item.revenue?.total || 0)}</div>
+              <small className="text-muted">{formatCurrency(item.revenue?.active || 0)} {t('coachesLedger.active')}</small>
+            </td>
+            <td>
+              <div className="fw-bold">{item.courses?.length || 0}</div>
+              <small className="text-muted">{item.courses?.filter(c => c.status === 'open').length || 0} {t('coachesLedger.open')}</small>
+            </td>
+            <td>
+              <div className="fw-bold">{item.trainees?.length || 0}</div>
+            </td>
+            <td>
+              <Button
+                variant="outline-primary"
+                size="sm"
+                onClick={() => handleViewCoach(item.coach)}
+                className="d-flex align-items-center gap-1"
+              >
+                <FiEye />
+                {t('coachesLedger.buttons.view')}
+              </Button>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </Table>
+  );
 
   if (loading || coachLoading) {
     return (
@@ -234,8 +484,12 @@ const CoachesLedger = () => {
   return (
     <div className="coaches-ledger-page">
       <Card>
-        <Card.Header className="d-flex justify-content-between align-items-center">
-          <div>
+        <Card.Header className="w-100 d-flex justify-content-between align-items-center">
+          <div className='w-100 d-flex align-items-center justify-content-between gap-2'>
+            <h4 className="mb-0">
+              <FiDollarSign className="me-2" />
+              {coachId ? t('coachesLedger.titleIndividual') : t('coachesLedger.title')}
+            </h4>
             {coachId && (
               <Button
                 variant="outline-secondary"
@@ -246,10 +500,6 @@ const CoachesLedger = () => {
                 {t('coachesLedger.buttons.backToList')}
               </Button>
             )}
-            <h4 className="mb-0">
-              <FiDollarSign className="me-2" />
-              {coachId ? t('coachesLedger.titleIndividual') : t('coachesLedger.title')}
-            </h4>
           </div>
         </Card.Header>
         <Card.Body>
@@ -266,10 +516,7 @@ const CoachesLedger = () => {
             </Alert>
           )}
 
-          {/* Coach Info (for individual view) */}
-          {coachId && renderCoachInfo()}
-
-          {/* Date Filter */}
+          {/* Date Filter - Always at top */}
           <div className="mb-4">
             <Row>
               <Col md={3}>
@@ -322,13 +569,33 @@ const CoachesLedger = () => {
             </div>
           )}
 
-          {/* Ledger Table */}
-          {filteredLedger.length > 0 ? (
-            renderLedgerTable()
-          ) : (
-            <div className="text-center py-4">
-              <p className="text-muted">{t('coachesLedger.noDataFound')}</p>
+          {/* Content based on view */}
+          {coachId ? (
+            <div>
+              {/* Coach Info */}
+              {renderCoachInfo()}
+
+              {/* Revenue Summary */}
+              {renderRevenueSummary()}
+
+              {/* Subscriptions Details */}
+              {renderSubscriptionsDetails()}
+
+              {/* Courses Details */}
+              {renderCoursesDetails()}
+
+              {/* Trainees Details */}
+              {renderTraineesDetails()}
             </div>
+          ) : (
+            /* Coach List */
+            filteredData.length > 0 ? (
+              renderCoachList()
+            ) : (
+              <div className="text-center py-4">
+                <p className="text-muted">{t('coachesLedger.noDataFound')}</p>
+              </div>
+            )
           )}
         </Card.Body>
       </Card>
@@ -358,10 +625,24 @@ const CoachesLedger = () => {
         [data-theme="dark"] .table th {
           background-color: rgba(255, 255, 255, 0.05);
           color: #ffffff;
+          border-color: #ffffff !important;
         }
 
         [data-theme="dark"] .table td {
           color: #ffffff;
+          border-color: #ffffff !important;
+        }
+
+        [data-theme="dark"] .table {
+          border-color: #ffffff !important;
+        }
+
+        [data-theme="dark"] .table-striped > tbody > tr:nth-of-type(odd) > td {
+          background-color: rgba(255, 255, 255, 0.02);
+        }
+
+        [data-theme="dark"] .table-hover > tbody > tr:hover > td {
+          background-color: rgba(255, 255, 255, 0.05);
         }
 
         [data-theme="dark"] .card {

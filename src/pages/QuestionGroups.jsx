@@ -9,12 +9,14 @@ import {
   deleteQuestionGroup,
   fetchQuestions,
   createQuestion,
+  updateQuestion,
   deleteQuestion,
   clearGroupsError,
   clearCreateGroupError,
   clearDeleteGroupError,
   clearQuestionsError,
   clearCreateQuestionError,
+  clearUpdateQuestionError,
   clearDeleteQuestionError,
   clearAllErrors
 } from '../store/slices/questionGroupsSlice';
@@ -51,6 +53,8 @@ const QuestionGroups = () => {
     questionsError,
     createQuestionLoading,
     createQuestionError,
+    updateQuestionLoading,
+    updateQuestionError,
     deleteQuestionLoading,
     deleteQuestionError
   } = useAppSelector((state) => state.questionGroups);
@@ -173,8 +177,8 @@ const QuestionGroups = () => {
     setQuestionForm({
       image: null,
       type: question.type || 'multiple_choice',
-      description_ar: question.description || '',
-      description_en: question.description || '',
+      description_ar: question.description?.ar || '',
+      description_en: question.description?.en || '',
       answers: question.answers && question.answers.length > 0 ? question.answers.map(answer => ({
         description_ar: answer.description?.ar || '',
         description_en: answer.description?.en || ''
@@ -202,8 +206,21 @@ const QuestionGroups = () => {
 
   const handleSubmitQuestion = () => {
     if (selectedQuestion) {
-      // Handle edit question (you can add edit functionality later)
-      console.log('Edit question:', selectedQuestion.id, questionForm);
+      // Handle edit question
+     
+      dispatch(updateQuestion({ groupId, questionId: selectedQuestion.id, questionData: questionForm }));
+      setShowAddQuestionModal(false);
+      setSelectedQuestion(null);
+      setQuestionForm({
+        image: null,
+        type: 'multiple_choice',
+        description_ar: '',
+        description_en: '',
+        answers: [
+          { description_ar: '', description_en: '' },
+          { description_ar: '', description_en: '' }
+        ]
+      });
     } else {
       dispatch(createQuestion({ groupId, questionData: questionForm }));
       setShowAddQuestionModal(false);
@@ -258,8 +275,6 @@ const QuestionGroups = () => {
     }));
   };
 
-
-  console.log(groups);
   
 
   // Filter questions based on search term
@@ -267,7 +282,8 @@ const QuestionGroups = () => {
   const filteredQuestions = currentQuestions.filter(question => {
     const searchLower = questionSearchTerm.toLowerCase();
     return (
-      question.description?.toLowerCase().includes(searchLower) ||
+      question.description?.en?.toLowerCase().includes(searchLower) ||
+      question.description?.ar?.toLowerCase().includes(searchLower) ||
       question.type?.toLowerCase().includes(searchLower)
     );
   });
@@ -358,6 +374,12 @@ const QuestionGroups = () => {
           {groupId && createQuestionError[groupId] && (
             <Alert variant="danger" dismissible onClose={() => dispatch(clearCreateQuestionError(groupId))}>
               {createQuestionError[groupId]}
+            </Alert>
+          )}
+
+          {groupId && updateQuestionError[groupId] && (
+            <Alert variant="danger" dismissible onClose={() => dispatch(clearUpdateQuestionError(groupId))}>
+              {updateQuestionError[groupId]}
             </Alert>
           )}
 
@@ -497,8 +519,11 @@ const QuestionGroups = () => {
                       <tr key={index}>
                         <td>
                           <div className="fw-bold">
-                            {question.description || '-'}
+                            {question.description?.ar || '-'}
                           </div>
+                          <small className="text-muted">
+                            {question.description?.en || '-'}
+                          </small>
                         </td>
                         <td>
                           <Badge bg="secondary">{getQuestionTypeLabel(question.type)}</Badge>
@@ -537,7 +562,7 @@ const QuestionGroups = () => {
                         </td>
                         <td>
                           <div className="d-flex gap-2">
-                            {/* <Button
+                            <Button
                               variant="outline-warning"
                               size="sm"
                               onClick={() => handleEditQuestion(question)}
@@ -545,7 +570,7 @@ const QuestionGroups = () => {
                             >
                               <FiEdit />
                               {t('common.edit')}
-                            </Button> */}
+                            </Button>
                             <Button
                               variant="outline-danger"
                               size="sm"
@@ -757,9 +782,12 @@ const QuestionGroups = () => {
           <Button 
             variant="primary" 
             onClick={handleSubmitQuestion}
-            disabled={createQuestionLoading[groupId]}
+            disabled={selectedQuestion ? updateQuestionLoading[groupId] : createQuestionLoading[groupId]}
           >
-            {createQuestionLoading[groupId] ? t('common.loading') : t('common.save')}
+            {selectedQuestion 
+              ? (updateQuestionLoading[groupId] ? t('common.loading') : t('common.save'))
+              : (createQuestionLoading[groupId] ? t('common.loading') : t('common.save'))
+            }
           </Button>
         </Modal.Footer>
       </Modal>

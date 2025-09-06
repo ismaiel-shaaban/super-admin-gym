@@ -38,7 +38,12 @@
     "dark": "Dark",
     "light": "Light",
     "english": "English",
-    "arabic": "Arabic"
+    "arabic": "Arabic",
+    "pending": "Pending",
+    "active": "Active",
+    "finished": "Finished",
+    "waitingForPayment": "Waiting for Payment",
+    "expired": "Expired"
   },
   "auth": {
     "loginTitle": "Admin Login",
@@ -55,13 +60,29 @@
   "dashboard": {
     "title": "Dashboard",
     "overview": "Overview",
+    "totalCoaches": "Total Coaches",
+    "totalTrainees": "Total Trainees",
     "totalUsers": "Total Users",
-    "activeUsers": "Active Users",
-    "newUsers": "New Users",
     "totalRevenue": "Total Revenue",
+    "activeRevenue": "Active Revenue",
+    "averageValue": "Avg Value",
+    "totalSubscriptions": "Total Subscriptions",
+    "monthlySubscriptions": "Monthly Subscriptions",
+    "recentSubscriptions": "Recent Subscriptions",
+    "recentUsers": "Recent Users",
+    "active": "Active",
+    "monthly": "Monthly",
     "recentActivity": "Recent Activity",
-    "quickActions": "Quick Actions",
-    "viewAll": "View All"
+    "newSubscription": "New Subscription",
+    "newUser": "New User",
+    "viewAll": "View All",
+    "dateFilter": "Date Filter",
+    "dateFrom": "Date From",
+    "dateTo": "Date To",
+    "applyFilter": "Apply Filter",
+    "clearFilter": "Clear Filter",
+    "expired": "Expired"
+
   },
   "users": {
     "title": "User Management",
@@ -196,6 +217,107 @@
     },
     "deleted": "Deleted"
   },
+  "coachesLedger": {
+    "title": "Coaches Ledger",
+    "titleIndividual": "Coach Details",
+    "searchPlaceholder": "Search coaches...",
+    "noDataFound": "No data found",
+    "dateFrom": "Date From",
+    "dateTo": "Date To",
+    "coachInfo": "Coach Information",
+    "coachDetails": {
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "totalRevenue": "Total Revenue"
+    },
+    "tableHeaders": {
+      "coach": "Coach",
+      "subscriptions": "Subscriptions",
+      "revenue": "Revenue",
+      "courses": "Courses",
+      "trainees": "Trainees",
+      "actions": "Actions"
+    },
+    "buttons": {
+      "view": "View",
+      "backToList": "Back to List",
+      "filter": "Filter"
+    },
+    "tabs": {
+      "overview": "Overview",
+      "subscriptions": "Subscriptions",
+      "courses": "Courses",
+      "trainees": "Trainees"
+    },
+    "overview": {
+      "totalRevenue": "Total Revenue",
+      "activeRevenue": "Active Revenue",
+      "totalSubscriptions": "Total Subscriptions",
+      "totalTrainees": "Total Trainees",
+      "coursesSummary": "Courses Summary",
+      "totalCourses": "Total Courses",
+      "openCourses": "Open Courses",
+      "totalCourseRevenue": "Total Course Revenue",
+      "recentSubscriptions": "Recent Subscriptions"
+    },
+    "subscriptions": {
+      "tableHeaders": {
+        "id": "ID",
+        "course": "Course",
+        "trainee": "Trainee",
+        "status": "Status",
+        "price": "Price",
+        "createdAt": "Created At",
+        "endedAt": "Ended At"
+      }
+    },
+    "courses": {
+      "tableHeaders": {
+        "id": "ID",
+        "title": "Title",
+        "type": "Type",
+        "status": "Status",
+        "price": "Price",
+        "subscribers": "Subscribers",
+        "revenue": "Revenue"
+      },
+      "total": "Total",
+      "active": "Active"
+    },
+    "trainees": {
+      "tableHeaders": {
+        "id": "ID",
+        "name": "Name",
+        "subscriptions": "Subscriptions",
+        "revenue": "Revenue"
+      },
+      "total": "Total",
+      "active": "Active"
+    },
+    "status": {
+      "pending": "Pending",
+      "waiting_for_payment": "Waiting for Payment",
+      "finished": "Finished",
+      "active": "Active",
+      "under_request": "Under Request",
+      "open": "Open"
+    },
+    "active": "Active",
+    "open": "Open",
+    "coursesDetails": "Courses Details",
+    "traineesInformation": "Trainees Information",
+    "subscriptionDetails": "Subscription Details",
+    "subscriptions": {
+      "tableHeaders": {
+        "course": "Course",
+        "trainee": "Trainee",
+        "status": "Status",
+        "price": "Price",
+        "dates": "Dates"
+      }
+    }
+  },
   "navigation": {
     "dashboard": "Dashboard",
     "users": "Users",
@@ -325,9 +447,9 @@
   },
   "coachesLedger": {
     "title": "Coaches Ledger",
-    "titleIndividual": "Coach Ledger Details",
-    "searchPlaceholder": "Search coaches ledger...",
-    "noDataFound": "No ledger data found",
+    "titleIndividual": "Coach Details",
+    "searchPlaceholder": "Search coaches...",
+    "noDataFound": "No data found",
     "dateFrom": "Date From",
     "dateTo": "Date To",
     "coachInfo": "Coach Information",
@@ -335,25 +457,89 @@
       "name": "Name",
       "email": "Email",
       "phone": "Phone",
-      "totalBalance": "Total Balance"
+      "totalRevenue": "Total Revenue"
     },
     "tableHeaders": {
       "coach": "Coach",
-      "transactionType": "Transaction Type",
-      "amount": "Amount",
-      "description": "Description",
-      "date": "Date",
+      "subscriptions": "Subscriptions",
+      "revenue": "Revenue",
+      "courses": "Courses",
+      "trainees": "Trainees",
       "actions": "Actions"
-    },
-    "transactionTypes": {
-      "credit": "Credit",
-      "debit": "Debit"
     },
     "buttons": {
       "view": "View",
       "backToList": "Back to List",
       "filter": "Filter"
-    }
+    },
+    "tabs": {
+      "overview": "Overview",
+      "subscriptions": "Subscriptions",
+      "courses": "Courses",
+      "trainees": "Trainees"
+    },
+    "overview": {
+      "totalRevenue": "Total Revenue",
+      "activeRevenue": "Active Revenue",
+      "totalSubscriptions": "Total Subscriptions",
+      "totalTrainees": "Total Trainees",
+      "coursesSummary": "Courses Summary",
+      "totalCourses": "Total Courses",
+      "openCourses": "Open Courses",
+      "totalCourseRevenue": "Total Course Revenue",
+      "recentSubscriptions": "Recent Subscriptions"
+    },
+    "subscriptions": {
+      "tableHeaders": {
+        "id": "ID",
+        "course": "Course",
+        "trainee": "Trainee",
+        "status": "Status",
+        "price": "Price",
+        "createdAt": "Created At",
+        "dates": "Dates",
+        "endedAt": "Ended At"
+      }
+    },
+    "courses": {
+      "tableHeaders": {
+        "id": "ID",
+        "title": "Title",
+        "type": "Type",
+        "status": "Status",
+        "price": "Price",
+        "subscribers": "Subscribers",
+        "revenue": "Revenue"
+      },
+      "total": "Total",
+      "active": "Active"
+    },
+    "trainees": {
+      "tableHeaders": {
+        "id": "ID",
+        "name": "Name",
+        "subscriptions": "Subscriptions",
+        "revenue": "Revenue"
+      },
+      "total": "Total",
+      "active": "Active"
+    },
+    "status": {
+      "pending": "Pending",
+      "waiting_for_payment": "Waiting for Payment",
+      "finished": "Finished",
+      "active": "Active",
+      "under_request": "Under Request",
+      "open": "Open"
+    },
+    "active": "Active",
+    "open": "Open",
+    "created": "Created",
+    "ends": "Ends",
+    "coursesDetails": "Courses Details",
+    "traineesInformation": "Trainees Information",
+    "subscriptionDetails": "Subscription Details"
+
   },
   "traineesLedger": {
     "title": "Trainees Ledger",
@@ -390,8 +576,10 @@
       "cancelled": "Cancelled",
       "expired": "Expired"
     },
-    "subscriptionDetails": "Subscription Details",
+        "subscriptionDetails": "Subscription Details",
     "subscriptionSummary": "Subscription Summary",
+    "coursesDetails": "Courses Details",
+    "traineesInformation": "Trainees Information",
     "total": "Total",
     "active": "Active",
     "coaches": "Coaches",
@@ -401,8 +589,8 @@
     "activeSubscriptions": "Active Subscriptions",
     "totalSpending": "Total Spending",
     "totalCoaches": "Total Coaches",
-         "coachesInformation": "Coaches Information",
-     "transactionSummary": "Transaction Summary",
+    "coachesInformation": "Coaches Information",
+    "transactionSummary": "Transaction Summary",
      "transactionHeaders": {
        "subscription": "Subscription",
        "amount": "Amount",
