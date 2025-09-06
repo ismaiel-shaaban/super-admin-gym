@@ -162,11 +162,11 @@ const Trainees = () => {
       phone: user.phone || '',
       password: '', // Don't pre-fill password
       password_confirmation: '', // Don't pre-fill password confirmation
-      country_id: user.country_id || '',
+      country_id: user?.profile?.country_id || '',
       phone_country: user.country_code || '',
       role: USER_ROLE_IDS.TRAINEE, // Always set as trainee for this page
-      birthdate: user.birthdate || '',
-      gender: user.gender || '',
+      birthdate: user?.profile?.birthdate || '',
+      gender: user?.profile?.gender || '',
     });
     setShowEditModal(true);
   };
